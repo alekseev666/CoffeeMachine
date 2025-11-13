@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CoffeeMachine
+namespace CoffeeMachineWPF
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace CoffeeMachine
+namespace CoffeeMachineWPF
 {
     /// <summary>
     /// Interaction logic for App.xaml

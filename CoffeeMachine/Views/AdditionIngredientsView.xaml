@@ -1,0 +1,245 @@
+﻿<UserControl x:Class="CoffeeMachineWPF.Views.AdditionIngredientsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CoffeeMachineWPF.Views"
+             xmlns:vm="clr-namespace:CoffeeMachineWPF.ViewModels"
+             xmlns:converters="clr-namespace:CoffeeMachineWPF.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="600">
+
+    <UserControl.Resources>
+        <converters:PreConditionColorConverter x:Key="PreConditionColorConverter"/>
+        <converters:PostConditionColorConverter x:Key="PostConditionColorConverter"/>
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <converters:IngredientTypeConverter x:Key="IngredientTypeConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+
+        <Style x:Key="IndicatorStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+        <Style x:Key="PreConditionStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding}" Value="True">
+                    <Setter Property="Foreground" Value="Green"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding}" Value="False">
+                    <Setter Property="Foreground" Value="Red"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20">
+            <!-- Заголовок -->
+            <TextBlock Text="{Binding OperationName}" 
+                      FontSize="20" 
+                      FontWeight="Bold"
+                      Foreground="#333"
+                      Margin="0,0,0,20"/>
+
+            <!-- Статус машины -->
+            <GroupBox Header="Статус кофемашины" FontWeight="SemiBold" Margin="0,0,0,15">
+                <StackPanel Margin="10">
+                    <Border Background="{Binding StatusColor}" 
+                           CornerRadius="5" 
+                           Padding="10,8"
+                           BorderThickness="0">
+                        <TextBlock Text="{Binding MachineStatus}" 
+                                  Foreground="White"
+                                  FontWeight="Bold"
+                                  FontSize="12"
+                                  HorizontalAlignment="Center"/>
+                    </Border>
+
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="{Binding CurrentWasteLevel, StringFormat='Уровень отходов: {0}%'}" 
+                                      FontSize="11"/>
+                            <TextBlock Text="{Binding WearLevel, StringFormat='Износ: {0:F1}%'}" 
+                                      FontSize="11"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="{Binding ComponentsHealth, StringFormat='Здоровье: {0}%'}" 
+                                      FontSize="11"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Выбор ингредиента -->
+            <GroupBox Header="Выберите ингредиент" FontWeight="SemiBold" Margin="0,0,0,15">
+                <StackPanel Margin="10">
+                    <ComboBox ItemsSource="{Binding AvailableIngredientTypes}"
+                             SelectedItem="{Binding SelectedIngredientType}"
+                             Height="35"
+                             FontSize="14">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource IngredientTypeConverter}}" Margin="5"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <!-- Текущее состояние -->
+                    <StackPanel Margin="0,10,0,0" Visibility="{Binding IsValidIngredientType, Converter={StaticResource BoolToVisibility}}">
+                        <TextBlock Text="{Binding CurrentAmount, StringFormat='Текущее количество: {0}'}" 
+                                  FontWeight="Normal"/>
+                        <TextBlock Text="{Binding MaxCapacity, StringFormat='Максимальная емкость: {0}'}" 
+                                  FontWeight="Normal"/>
+                        <TextBlock Text="{Binding AvailableCapacity, StringFormat='Доступно для пополнения: {0}'}" 
+                                  FontWeight="Normal" Foreground="Blue"/>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Настройки пополнения -->
+            <GroupBox Header="Настройки пополнения" FontWeight="SemiBold" Margin="0,0,0,15">
+                <StackPanel Margin="10">
+                    <!-- режим пополнения -->
+                    <RadioButton Content="Указать количество" 
+                                IsChecked="{Binding RefillToMax, Converter={StaticResource InverseBooleanConverter}}"
+                                GroupName="RefillMode"
+                                Margin="0,5"/>
+
+                    <StackPanel Margin="20,5,0,10" 
+                               Visibility="{Binding RefillToMax, Converter={StaticResource InverseBooleanConverter}}">
+                        <TextBlock Text="Количество для пополнения:" 
+                                  FontWeight="Normal"
+                                  Margin="0,0,0,5"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Slider Grid.Column="0"
+                                   Minimum="1" 
+                                   Maximum="{Binding AvailableCapacity}"
+                                   Value="{Binding RefillAmount}"
+                                   TickFrequency="10" 
+                                   IsSnapToTickEnabled="True"
+                                   TickPlacement="BottomRight"
+                                   Margin="0,0,10,0"/>
+
+                            <TextBox Grid.Column="1"
+                                    Text="{Binding RefillAmount}"
+                                    Width="60"
+                                    VerticalAlignment="Center"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <RadioButton Content="Заполнить до максимума" 
+                                IsChecked="{Binding RefillToMax}"
+                                GroupName="RefillMode"
+                                Margin="0,10,0,5"/>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Предусловия -->
+            <GroupBox Header="Проверка предусловий" FontWeight="SemiBold" Margin="0,0,0,15">
+                <StackPanel Margin="10">
+                    <StackPanel>
+                        <!-- Базовые предусловия из родительского класса -->
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="• " FontWeight="Bold"/>
+                            <TextBlock Text="Машина не сломана: " Style="{StaticResource PreConditionStyle}"/>
+                            <TextBlock Text="{Binding IsNotBroken}" Style="{StaticResource PreConditionStyle}" FontWeight="Bold"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="• " FontWeight="Bold"/>
+                            <TextBlock Text="Машина не готовит: " Style="{StaticResource PreConditionStyle}"/>
+                            <TextBlock Text="{Binding IsNotMakingCoffee}" Style="{StaticResource PreConditionStyle}" FontWeight="Bold"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="• " FontWeight="Bold"/>
+                            <TextBlock Text="Уровень отходов не критический: " Style="{StaticResource PreConditionStyle}"/>
+                            <TextBlock Text="{Binding WasteLevelNotCritical}" Style="{StaticResource PreConditionStyle}" FontWeight="Bold"/>
+                        </StackPanel>
+
+                        <!-- Специфические предусловия -->
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="• " FontWeight="Bold"/>
+                            <TextBlock Text="Выбран ингредиент: " Style="{StaticResource PreConditionStyle}"/>
+                            <TextBlock Text="{Binding IsValidIngredientType}" Style="{StaticResource PreConditionStyle}" FontWeight="Bold"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2" 
+                                   Visibility="{Binding RefillToMax, Converter={StaticResource InverseBooleanConverter}}">
+                            <TextBlock Text="• " FontWeight="Bold"/>
+                            <TextBlock Text="Количество > 0: " Style="{StaticResource PreConditionStyle}"/>
+                            <TextBlock Text="{Binding IsValidAmount}" Style="{StaticResource PreConditionStyle}" FontWeight="Bold"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2" 
+                                   Visibility="{Binding RefillToMax, Converter={StaticResource InverseBooleanConverter}}">
+                            <TextBlock Text="• " FontWeight="Bold"/>
+                            <TextBlock Text="Не превышает максимум: " Style="{StaticResource PreConditionStyle}"/>
+                            <TextBlock Text="{Binding IsWithinMaxCapacity}" Style="{StaticResource PreConditionStyle}" FontWeight="Bold"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2" 
+                                   Visibility="{Binding RefillToMax, Converter={StaticResource BoolToVisibility}}">
+                            <TextBlock Text="• " FontWeight="Bold"/>
+                            <TextBlock Text="Можно пополнить: " Style="{StaticResource PreConditionStyle}"/>
+                            <TextBlock Text="{Binding CanRefill}" Style="{StaticResource PreConditionStyle}" FontWeight="Bold"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Индикатор предусл -->
+                    <Border Margin="0,10,0,0" 
+                           Background="{Binding PreConditionsMet, Converter={StaticResource PreConditionColorConverter}}"
+                           Style="{StaticResource IndicatorStyle}">
+                        <TextBlock Text="{Binding PreConditionsMet, StringFormat='Все предусловия выполнены: {0}'}" 
+                                  Foreground="White"
+                                  FontWeight="Bold"/>
+                    </Border>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Кнопка выполнения -->
+            <Button Content="ПОПОЛНИТЬ" 
+                   Command="{Binding RefillCommand}"
+                   IsEnabled="{Binding PreConditionsMet}"
+                   Background="#2196F3"
+                   Foreground="White"
+                   FontSize="14"
+                   FontWeight="Bold"
+                   Padding="20,12"
+                   BorderThickness="0"
+                   Cursor="Hand"
+                   Margin="0,0,0,15">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#cccccc"/>
+                                <Setter Property="Foreground" Value="#666666"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <!-- Постусловие -->
+            <GroupBox Header="Результат выполнения" FontWeight="SemiBold">
+                <StackPanel Margin="10">
+                    <Border Background="{Binding PostConditionMet, Converter={StaticResource PostConditionColorConverter}}"
+                           Style="{StaticResource IndicatorStyle}">
+                        <TextBlock Text="{Binding PostConditionMet, StringFormat='Операция выполнена успешно: {0}'}" 
+                                  Foreground="White"
+                                  FontWeight="Bold"/>
+                    </Border>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

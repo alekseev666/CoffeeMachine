@@ -1,0 +1,295 @@
+﻿<UserControl x:Class="CoffeeMachineWPF.Views.MaintenanceServiceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CoffeeMachineWPF.Views"
+             xmlns:vm="clr-namespace:CoffeeMachineWPF.ViewModels"
+             xmlns:converters="clr-namespace:CoffeeMachineWPF.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="600">
+
+    <UserControl.Resources>
+        <converters:PreConditionColorConverter x:Key="PreConditionColorConverter"/>
+        <converters:PostConditionColorConverter x:Key="PostConditionColorConverter"/>
+        <converters:MaintenanceTypeConverter x:Key="MaintenanceTypeConverter"/>
+        <converters:MaintenanceTypeDescriptionConverter x:Key="MaintenanceTypeDescriptionConverter"/>
+        <converters:MaintenanceEffectConverter x:Key="MaintenanceEffectConverter"/>
+        <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+
+        <Style x:Key="IndicatorStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+
+        <Style x:Key="PreConditionStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding}" Value="True">
+                    <Setter Property="Foreground" Value="Green"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding}" Value="False">
+                    <Setter Property="Foreground" Value="Red"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20">
+            <!-- Заголовок -->
+            <TextBlock Text="{Binding OperationName}" 
+                      FontSize="20" 
+                      FontWeight="Bold"
+                      Foreground="#333"
+                      Margin="0,0,0,20"/>
+
+            <!-- Статус машины -->
+            <GroupBox Header="Статус кофемашины" FontWeight="SemiBold" Margin="0,0,0,15">
+                <StackPanel Margin="10">
+                    <Border Background="{Binding StatusColor}" 
+                           CornerRadius="5" 
+                           Padding="10,8"
+                           BorderThickness="0">
+                        <TextBlock Text="{Binding MachineStatus}" 
+                                  Foreground="White"
+                                  FontWeight="Bold"
+                                  FontSize="12"
+                                  HorizontalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Состояние износа -->
+            <GroupBox Header="Состояние износа" FontWeight="SemiBold" Margin="0,0,0,15">
+                <StackPanel Margin="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Уровень износа:"/>
+                        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="10,0,0,0">
+                            <ProgressBar Value="{Binding WearLevel, Mode=OneWay}" 
+                                        Maximum="100"
+                                        Height="20"
+                                        Width="150"/>
+                            <TextBlock Text="{Binding WearLevel, StringFormat={}{0:F1}%}" 
+                                      Margin="10,0,0,0"
+                                      FontWeight="Bold"
+                                      VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Здоровье компонентов:"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" 
+                                  Text="{Binding ComponentsHealth, StringFormat={}{0}%}"
+                                  FontWeight="Bold"
+                                  Margin="10,0,0,0"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Состояние машины:"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" 
+                                  Text="{Binding IsBroken, Converter={x:Static converters:BoolToMaintenanceStatusConverter.Instance}}"
+                                  FontWeight="Bold"
+                                  Foreground="{Binding IsBroken, Converter={StaticResource BoolToColorConverter}}"
+                                  Margin="10,0,0,0"/>
+                    </Grid>
+
+                    <!-- Информация о влиянии обслуживания -->
+                    <Border Background="#E3F2FD" BorderBrush="#90CAF9" BorderThickness="1" 
+                            CornerRadius="5" Padding="10" Margin="0,10,0,0">
+                        <TextBlock Text="{Binding SelectedMaintenanceType, Converter={StaticResource MaintenanceEffectConverter}}"
+                                  FontSize="12"
+                                  TextWrapping="Wrap"
+                                  Foreground="#1565C0"/>
+                    </Border>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Текущее состояние машины -->
+            <GroupBox Header="Текущее состояние машины" FontWeight="SemiBold" Margin="0,0,0,15">
+                <StackPanel Margin="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Уровень отходов -->
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Уровень отходов:"/>
+                        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="10,0,0,0">
+                            <ProgressBar Value="{Binding CurrentWasteLevel, Mode=OneWay}" 
+                                         Maximum="100"
+                                         Height="20"
+                                         Width="150"/>
+                            <TextBlock Text="{Binding CurrentWasteLevel, StringFormat={}{0}%}" 
+                                      Margin="10,0,0,0"
+                                      FontWeight="Bold"
+                                      VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Счетчик обслуживаний -->
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Счетчик обслуживаний:"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" 
+                                  Text="{Binding MaintenanceCount, Mode=OneWay}"
+                                  FontWeight="Bold"
+                                  Margin="10,0,0,0"/>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Выбор типа обслуживания -->
+            <GroupBox Header="Тип обслуживания" FontWeight="SemiBold" Margin="0,0,0,15">
+                <StackPanel Margin="10">
+                    <ComboBox ItemsSource="{Binding AvailableMaintenanceTypes}"
+                             SelectedItem="{Binding SelectedMaintenanceType}"
+                             Height="35"
+                             FontSize="14">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource MaintenanceTypeConverter}}" Margin="5"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+
+                    <!-- Описание выбранного типа -->
+                    <TextBlock Text="{Binding SelectedMaintenanceType, Converter={StaticResource MaintenanceTypeDescriptionConverter}}"
+                              FontStyle="Italic"
+                              Foreground="#666"
+                              Margin="0,5,0,0"
+                              TextWrapping="Wrap"/>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Дополнительные опции -->
+            <GroupBox Header="Дополнительные опции" FontWeight="SemiBold" Margin="0,0,0,15">
+                <StackPanel Margin="10">
+                    <CheckBox Content="Слить остатки воды из системы" 
+                             IsChecked="{Binding DrainWater}"
+                             FontWeight="Normal"
+                             Margin="0,5"/>
+
+                    <CheckBox Content="Сбросить статистику напитков" 
+                             IsChecked="{Binding ResetStatistics}"
+                             FontWeight="Normal"
+                             Margin="0,5"/>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Предусловия -->
+            <GroupBox Header="Проверка предусловий" FontWeight="SemiBold" Margin="0,0,0,15">
+                <StackPanel Margin="10">
+                    <StackPanel>
+                        <!-- Единственное обязательное условие -->
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="• " FontWeight="Bold"/>
+                            <TextBlock Text="Машина не готовит напиток: " Style="{StaticResource PreConditionStyle}"/>
+                            <TextBlock Text="{Binding IsNotMakingCoffee}" Style="{StaticResource PreConditionStyle}" FontWeight="Bold"/>
+                        </StackPanel>
+                        
+                        <!-- Информационные условия (не блокирующие) -->
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="• " FontWeight="Bold"/>
+                            <TextBlock Text="Есть отходы для очистки: " Style="{StaticResource PreConditionStyle}"/>
+                            <TextBlock Text="{Binding HasWaste}" Style="{StaticResource PreConditionStyle}" FontWeight="Bold"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="• " FontWeight="Bold"/>
+                            <TextBlock Text="Ключ обслуживания активирован: " Style="{StaticResource PreConditionStyle}"/>
+                            <TextBlock Text="{Binding IsMaintenanceKeyActivated}" Style="{StaticResource PreConditionStyle}" FontWeight="Bold"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="• " FontWeight="Bold"/>
+                            <TextBlock Text="Есть моющие средства: " Style="{StaticResource PreConditionStyle}"/>
+                            <TextBlock Text="{Binding HasCleaningSupplies}" Style="{StaticResource PreConditionStyle}" FontWeight="Bold"/>
+                        </StackPanel>
+                        
+                        <!-- Информация о состоянии машины -->
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,2" Background="#FFF3E0">
+                            <TextBlock Text="Обслуживание доступно даже при:" 
+                                      FontStyle="Italic"
+                                      Foreground="#E65100"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="15,2,0,2">
+                            <TextBlock Text="▪ " FontWeight="Bold"/>
+                            <TextBlock Text="Сломанной машине" 
+                                      FontStyle="Italic"
+                                      Foreground="#666"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="15,2,0,2">
+                            <TextBlock Text="▪ " FontWeight="Bold"/>
+                            <TextBlock Text="Переполненном баке отходов" 
+                                      FontStyle="Italic"
+                                      Foreground="#666"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="15,2,0,2">
+                            <TextBlock Text="▪ " FontWeight="Bold"/>
+                            <TextBlock Text="Высоком уровне износа" 
+                                      FontStyle="Italic"
+                                      Foreground="#666"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Общий индикатор Pre -->
+                    <Border Margin="0,10,0,0" 
+                           Background="{Binding PreConditionsMet, Converter={StaticResource PreConditionColorConverter}}"
+                           Style="{StaticResource IndicatorStyle}">
+                        <TextBlock Text="{Binding PreConditionsMet, StringFormat='Обслуживание доступно: {0}'}" 
+                                  Foreground="White"
+                                  FontWeight="Bold"/>
+                    </Border>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Кнопка выполнения -->
+            <Button Content="ВЫПОЛНИТЬ ОБСЛУЖИВАНИЕ" 
+                   Command="{Binding PerformMaintenanceCommand}"
+                   IsEnabled="{Binding PreConditionsMet}"
+                   Background="#FF9800"
+                   Foreground="White"
+                   FontSize="14"
+                   FontWeight="Bold"
+                   Padding="20,12"
+                   BorderThickness="0"
+                   Cursor="Hand"
+                   Margin="0,0,0,15">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                        <Style.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#cccccc"/>
+                                <Setter Property="Foreground" Value="#666666"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="True">
+                                <Setter Property="Background" Value="#FF9800"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <!-- Постусловие -->
+            <GroupBox Header="Результат выполнения" FontWeight="SemiBold">
+                <StackPanel Margin="10">
+                    <Border Background="{Binding PostConditionMet, Converter={StaticResource PostConditionColorConverter}}"
+                           Style="{StaticResource IndicatorStyle}">
+                        <TextBlock Text="{Binding PostConditionMet, StringFormat='Операция выполнена успешно: {0}'}" 
+                                  Foreground="White"
+                                  FontWeight="Bold"/>
+                    </Border>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

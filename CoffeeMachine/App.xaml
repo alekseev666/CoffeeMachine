@@ -2,8 +2,17 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:CoffeeMachineWPF"
-             StartupUri="Views/MainWindow.xaml">
+             xmlns:vm="clr-namespace:CoffeeMachineWPF.ViewModels"
+             xmlns:views="clr-namespace:CoffeeMachineWPF.Views">
     <Application.Resources>
-         
+        <DataTemplate DataType="{x:Type vm:MakeCoffeeVM}">
+            <views:MakeCoffeeView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AdditionIngredientsVM}">
+            <views:AdditionIngredientsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MaintenanceServiceVM}">
+            <views:MaintenanceServiceView />
+        </DataTemplate>
     </Application.Resources>
 </Application>

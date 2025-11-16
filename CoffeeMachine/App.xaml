@@ -17,5 +17,8 @@
         <DataTemplate DataType="{x:Type vm:CycleAnalysisVM}">
             <views:CycleAnalysisView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:StateControllerVM}">
+            <views:StateControllerView />
+        </DataTemplate>
     </Application.Resources>
 </Application>

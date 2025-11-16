@@ -139,6 +139,10 @@ public partial class MakeCoffeeVM : OperationViewModelBase
             IsBrewingInProgress = true;
             BrewStatus = "Начало приготовления...";
 
+            _coffeeMachine.IsMakingCoffee = true;
+            UpdateCommonProperties();
+            UpdateAllProperties();
+
             await _brewingService.BrewCoffeeAsync(SelectedCoffeeType, SugarLevel, AddMilk);
 
             ConsumeResources();
@@ -148,6 +152,7 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         finally
         {
             IsBrewingInProgress = false;
+            _coffeeMachine.IsMakingCoffee = false;
             UpdateAllProperties();
             AnalyzeAlgorithmCommand.Execute(null);
         }

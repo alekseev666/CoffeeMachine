@@ -34,12 +34,14 @@ namespace CoffeeMachineWPF
             services.AddTransient<CoffeeBrewingValidator>();
             services.AddSingleton<WPAnalyzer>();
             services.AddSingleton<CycleAnalyzerService>();
+            services.AddSingleton<StateControllerService>();
 
             // ViewModels
             services.AddTransient<MakeCoffeeVM>();
             services.AddTransient<AdditionIngredientsVM>();
             services.AddTransient<MaintenanceServiceVM>();
             services.AddTransient<CycleAnalysisVM>();
+            services.AddTransient<StateControllerVM>();
             services.AddSingleton<MainWindowVM>();
 
             // Views

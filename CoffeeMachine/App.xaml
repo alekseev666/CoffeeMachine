@@ -14,5 +14,8 @@
         <DataTemplate DataType="{x:Type vm:MaintenanceServiceVM}">
             <views:MaintenanceServiceView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:CycleAnalysisVM}">
+            <views:CycleAnalysisView />
+        </DataTemplate>
     </Application.Resources>
 </Application>

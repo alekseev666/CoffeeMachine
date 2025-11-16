@@ -42,6 +42,29 @@
                       Foreground="#333"
                       Margin="0,0,0,20"/>
 
+            <!-- Блок WP-анализа -->
+            <GroupBox Header="WP-анализ алгоритмов (ЛР-2)" FontWeight="SemiBold" Margin="0,0,0,15">
+                <StackPanel Margin="10">
+                    <Button Content="Анализировать алгоритм" 
+               Command="{Binding AnalyzeAlgorithmCommand}"
+               Background="#9C27B0"
+               Foreground="White"
+               FontSize="12"
+               FontWeight="Bold"
+               Padding="15,8"
+               Margin="0,0,0,10"/>
+
+                    <Border BorderBrush="#DDD" BorderThickness="1" Background="#FAFAFA" 
+                            CornerRadius="5" Padding="10" MaxHeight="300">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <TextBlock Text="{Binding AnalysisReport}" 
+                                       FontFamily="Segoe UI"
+                                       FontSize="12"
+                                       TextWrapping="Wrap"/>
+                        </ScrollViewer>
+                    </Border>
+                </StackPanel>
+            </GroupBox>
             <!-- Статус машины -->
             <GroupBox Header="Статус кофемашины" FontWeight="SemiBold" Margin="0,0,0,15">
                 <StackPanel Margin="10">
@@ -154,6 +177,67 @@
                 </StackPanel>
             </GroupBox>
 
+            <!-- Время приготовления -->
+            <GroupBox Header="⏱️ Время приготовления" FontWeight="SemiBold" Margin="0,0,0,15">
+                <StackPanel Margin="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Расчетное время:" 
+                      FontWeight="Normal" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" 
+                      Text="{Binding EstimatedBrewTime, StringFormat={}{0:F1} сек}"
+                      FontWeight="Bold" Foreground="#2196F3"
+                      Margin="10,0,0,0"/>
+
+                        <!-- Прогресс бар приготовления -->
+                        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                       Margin="0,10,0,0"
+                       Visibility="{Binding IsBrewingInProgress, Converter={StaticResource BoolToVisibility}}">
+                            <TextBlock Text="{Binding BrewStatus}" 
+                          FontSize="11" FontWeight="SemiBold"
+                          Margin="0,0,0,5"/>
+                            <ProgressBar Value="{Binding CurrentBrewProgress}"
+                            Height="15"
+                            Background="#E0E0E0"
+                            BorderThickness="1"
+                            BorderBrush="#BDBDBD">
+                                <ProgressBar.Foreground>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                        <GradientStop Color="#4CAF50" Offset="0"/>
+                                        <GradientStop Color="#8BC34A" Offset="0.5"/>
+                                        <GradientStop Color="#CDDC39" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </ProgressBar.Foreground>
+                            </ProgressBar>
+                        </StackPanel>
+
+                        <!-- Факторы влияния на время -->
+                        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
+                       Margin="0,10,0,0"
+                       Background="#F5F5F5">
+                            <TextBlock Text="Факторы влияния на время:" 
+                          FontSize="11" FontWeight="Bold" Margin="0,0,0,3"/>
+                            <TextBlock Text="{Binding SelectedCoffeeType, StringFormat='• Тип кофе: {0}'}" 
+                          FontSize="10" Margin="5,1"/>
+                            <TextBlock Text="{Binding SugarLevel, StringFormat='• Сахар: {0} порций'}" 
+                          FontSize="10" Margin="5,1"/>
+                            <TextBlock Text="{Binding AddMilk, StringFormat='• Молоко: {0}'}" 
+                          FontSize="10" Margin="5,1"/>
+                            <TextBlock Text="{Binding WearLevel, StringFormat='• Износ машины: {0:F1}%'}" 
+                          FontSize="10" Margin="5,1"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
             <!-- Предусловия -->
             <GroupBox Header="Проверка предусловий" FontWeight="SemiBold" Margin="0,0,0,15">
                 <StackPanel Margin="10">

@@ -1,0 +1,187 @@
+﻿<UserControl x:Class="CoffeeMachineWPF.Views.CycleAnalysisView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CoffeeMachineWPF.Views"
+             xmlns:converters="clr-namespace:CoffeeMachineWPF.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <converters:CycleProcessToVisibilityConverter x:Key="CycleProcessToVisibilityConverter"/>
+    </UserControl.Resources>
+    
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20">
+
+            <!-- ЗАГОЛОВОК -->
+            <TextBlock Text="Анализ циклических процессов кофейной машины"
+                      FontSize="20" 
+                      FontWeight="Bold"
+                      Foreground="#2C3E50"/>
+
+            <!-- ВЫБОР ПРОЦЕССА -->
+            <GroupBox Header="Выбор процесса для анализа" 
+                     BorderBrush="#BDC3C7" 
+                     BorderThickness="1"
+                     Padding="15">
+                <StackPanel>
+                    <ComboBox ItemsSource="{Binding AvailableProcesses}"
+                             SelectedItem="{Binding SelectedProcess}"
+                             FontSize="14"
+                             Padding="10,8"/>
+
+                    <!-- ПАНЕЛЬ ПАРАМЕТРОВ ДЛЯ КАЖДОГО ПРОЦЕССА -->
+                    <StackPanel>
+
+                        <!-- ПАРАМЕТРЫ НАГРЕВА ВОДЫ -->
+                        <StackPanel x:Name="WaterHeatingParams" 
+                                   Visibility="{Binding SelectedProcess, 
+                                                Converter={StaticResource CycleProcessToVisibilityConverter}, 
+                                                ConverterParameter=WaterHeating}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,0,10,0">
+                                    <TextBlock Text="Начальная температура (°C)" 
+                                              FontWeight="SemiBold" 
+                                              Margin="0,0,0,5"/>
+                                    <TextBox Text="{Binding CurrentTemperature}" 
+                                            Padding="8" 
+                                            FontSize="14"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Grid.Row="0" Margin="10,0,0,0">
+                                    <TextBlock Text="Целевая температура (°C)" 
+                                              FontWeight="SemiBold" 
+                                              Margin="0,0,0,5"/>
+                                    <TextBox Text="{Binding TargetTemperature}" 
+                                            Padding="8" 
+                                            FontSize="14"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="0" Grid.Row="1" Margin="0,10,10,0">
+                                    <TextBlock Text="Скорость нагрева (°C/итерация)" 
+                                              FontWeight="SemiBold" 
+                                              Margin="0,0,0,5"/>
+                                    <TextBox Text="{Binding HeatingRate}" 
+                                            Padding="8" 
+                                            FontSize="14"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Grid.Row="1" Margin="10,10,0,0">
+                                    <TextBlock Text="Макс. безопасная температура (°C)" 
+                                              FontWeight="SemiBold" 
+                                              Margin="0,0,0,5"/>
+                                    <TextBox Text="{Binding MaxSafeTemperature}" 
+                                            Padding="8" 
+                                            FontSize="14"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- ПАРАМЕТРЫ ОЧИСТКИ БАКОВ -->
+                        <StackPanel x:Name="TankCleaningParams" 
+                                   Visibility="{Binding SelectedProcess, 
+                                                Converter={StaticResource CycleProcessToVisibilityConverter}, 
+                                                ConverterParameter=WaterHeating}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                    <TextBlock Text="Текущий уровень отходов (%)" 
+                                              FontWeight="SemiBold" 
+                                              Margin="0,0,0,5"/>
+                                    <TextBox Text="{Binding CurrentWasteLevel}" 
+                                            Padding="8" 
+                                            FontSize="14"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                    <TextBlock Text="Скорость очистки (%/итерация)" 
+                                              FontWeight="SemiBold" 
+                                              Margin="0,0,0,5"/>
+                                    <TextBox Text="{Binding CleaningRate}" 
+                                            Padding="8" 
+                                            FontSize="14"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- ПАРАМЕТРЫ ТЕСТИРОВАНИЯ ДОЗАТОРОВ -->
+                        <StackPanel x:Name="DispenserTestingParams" 
+                                  Visibility="{Binding SelectedProcess, 
+                                                Converter={StaticResource CycleProcessToVisibilityConverter}, 
+                                                ConverterParameter=WaterHeating}">
+                            <StackPanel>
+                                <TextBlock Text="Количество дозаторов для тестирования" 
+                                          FontWeight="SemiBold" 
+                                          Margin="0,0,0,5"/>
+                                <TextBox Text="{Binding NumberOfDispensers}" 
+                                        Padding="8" 
+                                        FontSize="14"
+                                        Width="200"
+                                        HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                    </StackPanel>
+
+                    <!-- КНОПКА АНАЛИЗА -->
+                    <Button Content="🔍 Проанализировать цикл" 
+                           Command="{Binding AnalyzeCycleCommand}"
+                           Background="#3498DB"
+                           Foreground="White"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Padding="20,12"
+                           BorderThickness="0"
+                           HorizontalAlignment="Stretch"
+                           Margin="0,10,0,0">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="#3498DB"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#2980B9"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- ОБЛАСТЬ РЕЗУЛЬТАТОВ -->
+            <GroupBox Header="Результаты анализа" 
+                     BorderBrush="#BDC3C7" 
+                     BorderThickness="1"
+                     Padding="15">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" 
+                             MaxHeight="400">
+                    <TextBox Text="{Binding AnalysisReport}" 
+                            IsReadOnly="True"
+                            TextWrapping="Wrap"
+                            FontFamily="Consolas"
+                            FontSize="12"
+                            BorderThickness="0"
+                            Background="Transparent"
+                            VerticalScrollBarVisibility="Auto"
+                            HorizontalScrollBarVisibility="Auto"/>
+                </ScrollViewer>
+            </GroupBox>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

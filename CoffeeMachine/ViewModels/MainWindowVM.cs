@@ -1,8 +1,5 @@
-﻿using CoffeeMachineWPF.Models;
-using CoffeeMachineWPF.ViewModels;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace CoffeeMachineWPF.ViewModels
 {
@@ -13,16 +10,18 @@ namespace CoffeeMachineWPF.ViewModels
 
         public ObservableCollection<IOperationViewModel> Operations { get; }
 
-        public MainWindowVM()
+        public MainWindowVM(
+            MakeCoffeeVM makeCoffeeVM,
+            AdditionIngredientsVM additionIngredientsVM,
+            MaintenanceServiceVM maintenanceServiceVM,
+            CycleAnalysisVM cycleAnalysisVM)
         {
-            var coffeeMachine = new CoffeeMachine();
-
             Operations = new ObservableCollection<IOperationViewModel>
             {
-                new MakeCoffeeVM(coffeeMachine),
-                new AdditionIngredientsVM(coffeeMachine),
-                new MaintenanceServiceVM(coffeeMachine)
-
+                makeCoffeeVM,
+                additionIngredientsVM,
+                maintenanceServiceVM,
+                cycleAnalysisVM
             };
 
             SelectedOperation = Operations.FirstOrDefault();

@@ -22,14 +22,14 @@ namespace CoffeeMachineWPF.ViewModels
 
         public bool IsValidIngredientType => SelectedIngredientType != null;
         public bool IsValidAmount => RefillAmount > 0;
-        public bool IsWithinMaxCapacity => RefillAmount <= GetMaxCapacity();
-        public bool CanRefill => !RefillToMax || (GetMaxCapacity() - GetCurrentAmount()) > 0;
+        public bool IsWithinMaxCapacity => RefillAmount <= AvailableCapacity;
+        public bool HasAvailableCapacity => AvailableCapacity > 0;
 
         public bool PreConditionsMet =>
-            MachineIsOperational &&
-            IsValidIngredientType &&
-            ((!RefillToMax && IsValidAmount && IsWithinMaxCapacity) ||
-             (RefillToMax && CanRefill));
+                   MachineIsOperational &&
+                   IsValidIngredientType &&
+                   ((!RefillToMax && IsValidAmount && IsWithinMaxCapacity) ||
+                    (RefillToMax && HasAvailableCapacity));
 
         public int CurrentAmount => GetCurrentAmount();
         public int MaxCapacity => GetMaxCapacity();
@@ -123,7 +123,6 @@ namespace CoffeeMachineWPF.ViewModels
             OnPropertyChanged(nameof(IsValidIngredientType));
             OnPropertyChanged(nameof(IsValidAmount));
             OnPropertyChanged(nameof(IsWithinMaxCapacity));
-            OnPropertyChanged(nameof(CanRefill));
             OnPropertyChanged(nameof(PreConditionsMet));
             OnPropertyChanged(nameof(CurrentAmount));
             OnPropertyChanged(nameof(MaxCapacity));

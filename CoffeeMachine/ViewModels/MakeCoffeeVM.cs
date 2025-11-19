@@ -248,6 +248,7 @@ public partial class MakeCoffeeVM : OperationViewModelBase
 
     private void UpdateAllProperties()
     {
+        
         NotifyPreConditionsChanged();
         UpdateCommonProperties();
     }

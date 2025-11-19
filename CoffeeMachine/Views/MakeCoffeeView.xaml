@@ -106,15 +106,17 @@
             <GroupBox Header="Выбор напитка" FontWeight="SemiBold" Margin="0,0,0,15">
                 <StackPanel Margin="10">
                     <ComboBox ItemsSource="{Binding AvailableCoffeeTypes}"
-                             SelectedItem="{Binding SelectedCoffeeType}"
-                             Height="35"
-                             FontSize="14">
+                         SelectedItem="{Binding SelectedCoffeeType}"
+                         Height="35"
+                         FontSize="14"
+                         IsEnabled="{Binding IsNotMakingCoffee}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Converter={StaticResource CoffeeTypeConverter}}" Margin="5"/>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
+                    
 
                     <!-- Информация о рецепте -->
                     <StackPanel Margin="0,10,0,0" 
@@ -155,25 +157,28 @@
                         </Grid.ColumnDefinitions>
 
                         <Slider Grid.Column="0"
-                               Minimum="0" 
-                               Maximum="5"
-                               Value="{Binding SugarLevel}"
-                               TickFrequency="1" 
-                               IsSnapToTickEnabled="True"
-                               TickPlacement="BottomRight"
-                               Margin="0,0,10,0"/>
+                           Minimum="0" 
+                           Maximum="5"
+                           Value="{Binding SugarLevel}"
+                           TickFrequency="1" 
+                           IsSnapToTickEnabled="True"
+                           TickPlacement="BottomRight"
+                           Margin="0,0,10,0"
+                           IsEnabled="{Binding IsNotMakingCoffee}"/>
 
                         <TextBox Grid.Column="1"
-                                Text="{Binding SugarLevel}"
-                                Width="40"
-                                VerticalAlignment="Center"/>
+                            Text="{Binding SugarLevel}"
+                            Width="40"
+                            VerticalAlignment="Center"
+                            IsEnabled="{Binding IsNotMakingCoffee}"/>
                     </Grid>
 
                     <!-- Добавить молоко -->
                     <CheckBox Content="Добавить молоко" 
-                             IsChecked="{Binding AddMilk}"
-                             FontWeight="Normal"
-                             Margin="0,15,0,0"/>
+                         IsChecked="{Binding AddMilk}"
+                         FontWeight="Normal"
+                         Margin="0,15,0,0"
+                         IsEnabled="{Binding IsNotMakingCoffee}"/>
                 </StackPanel>
             </GroupBox>
 
@@ -345,12 +350,12 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="Напиток:" 
-                              FontWeight="SemiBold" Margin="0,0,5,3"
-                              Visibility="{Binding IsCoffeeReady, Converter={StaticResource BoolToVisibility}}"/>   
+                                      FontWeight="SemiBold" Margin="0,0,5,3"
+                                      Visibility="{Binding IsCoffeeReady, Converter={StaticResource BoolToVisibility}}"/>
                             <TextBlock Grid.Row="0" Grid.Column="1" 
-                              Text="{Binding SelectedCoffeeType}"
-                              FontWeight="Bold" Foreground="Green"
-                              Visibility="{Binding IsCoffeeReady, Converter={StaticResource BoolToVisibility}}"/>
+                                      Text="{Binding SelectedCoffeeType, Converter={StaticResource CoffeeTypeConverter}}"
+                                      FontWeight="Bold" Foreground="Green"
+                                      Visibility="{Binding IsCoffeeReady, Converter={StaticResource BoolToVisibility}}"/>
 
                             <TextBlock Grid.Row="1" Grid.Column="0" Text="Время:" 
                               FontWeight="SemiBold" Margin="0,0,5,3"

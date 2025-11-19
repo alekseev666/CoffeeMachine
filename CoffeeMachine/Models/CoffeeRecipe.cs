@@ -17,8 +17,8 @@
         {
             return type switch
             {
-                CoffeeType.Espresso => new(50, 15, 30),
-                CoffeeType.Americano => new(150, 15, 30),
+                CoffeeType.Espresso => new(50, 15, 0),
+                CoffeeType.Americano => new(150, 15, 0),
                 CoffeeType.Cappuccino => new(100, 15, 50),
                 CoffeeType.Latte => new(50, 15, 100),
 

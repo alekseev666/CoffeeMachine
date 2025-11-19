@@ -24,13 +24,25 @@ namespace CoffeeMachineWPF.Services
                 ["Достаточно кофе"] = _coffeeMachine.Coffee >= recipe.RequiredCoffee,
                 ["Достаточно молока"] = !addMilk || _coffeeMachine.Milk >= recipe.RequiredMilk,
                 ["Есть стаканчики"] = _coffeeMachine.Cups > 0,
-                ["Достаточно сахара"] = _coffeeMachine.Sugar >= sugarLevel
+                ["Достаточно сахара"] = _coffeeMachine.Sugar >= sugarLevel,
+                ["Молоко совместимо с типом кофе"] = IsMilkCompatibleWithCoffeeType(coffeeType, addMilk)
             };
 
             return new BrewingValidationResult(
                 conditions.Values.All(x => x),
                 conditions
             );
+        }
+
+        private bool IsMilkCompatibleWithCoffeeType(CoffeeType coffeeType, bool addMilk)
+        {
+            // Для Espresso и Americano молоко не допускается
+            if ((coffeeType == CoffeeType.Espresso || coffeeType == CoffeeType.Americano) && addMilk)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 

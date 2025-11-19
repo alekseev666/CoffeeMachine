@@ -61,6 +61,9 @@ public partial class MakeCoffeeVM : OperationViewModelBase
     public bool HasCups => _coffeeMachine.Cups > 0;
     public bool HasSugar => _coffeeMachine.Sugar >= SugarLevel;
 
+    public bool CanAddMilk => SelectedCoffeeType != CoffeeType.Espresso &&
+                            SelectedCoffeeType != CoffeeType.Americano;
+
     public bool PreConditionsMet =>
         IsNotBroken &&
         IsNotMakingCoffee &&
@@ -81,6 +84,10 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         _validator = validator;
         _wpAnalyzer = wpAnalyzer;
 
+        BrewResultMessage = "Кофе не готово";
+        IsCoffeeReady = false;
+
+
         SetupEventHandlers();
         UpdateCurrentRecipe();
     }
@@ -93,7 +100,25 @@ public partial class MakeCoffeeVM : OperationViewModelBase
 
         PropertyChanged += OnPropertyChanged;
     }
+    partial void OnSelectedCoffeeTypeChanged(CoffeeType value)
+    {
+        ResetCoffeeReadyState();
 
+        // Автоматически сбрасываем молоко для запрещенных типов
+        if (!CanAddMilk)
+        {
+            AddMilk = false;
+        }
+
+        UpdateAll();
+    }
+    private void UpdateAll()
+    {
+        UpdateEstimatedTime();
+        UpdateCurrentRecipe();
+        NotifyPreConditionsChanged();
+        OnPropertyChanged(nameof(CanAddMilk)); 
+    }
     private void OnPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
         if (e.PropertyName is nameof(SelectedCoffeeType) or nameof(SugarLevel) or nameof(AddMilk))
@@ -112,6 +137,7 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         OnPropertyChanged(nameof(HasEnoughCoffee));
         OnPropertyChanged(nameof(HasEnoughMilk));
     }
+
 
     private void UpdateEstimatedTime() => EstimatedBrewTime = _coffeeMachine.CalculateBrewTime(SelectedCoffeeType, SugarLevel, AddMilk);
 
@@ -222,6 +248,12 @@ public partial class MakeCoffeeVM : OperationViewModelBase
     private bool CanMakeCoffee()
     {
         var validation = _validator.Validate(SelectedCoffeeType, SugarLevel, AddMilk);
+
+        if ((SelectedCoffeeType == CoffeeType.Espresso || SelectedCoffeeType == CoffeeType.Americano) && AddMilk)
+        {
+            return false;
+        }
+
         return validation.IsValid;
     }
 
@@ -274,4 +306,23 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         ["Счетчик напитков увеличен"] = PostConditionMet,
         ["Уровень отходов увеличен"] = PostConditionMet
     };
+
+    partial void OnSugarLevelChanged(int value)
+    {
+        ResetCoffeeReadyState();
+        UpdateEstimatedTime();
+        NotifyPreConditionsChanged();
+    }
+
+    partial void OnAddMilkChanged(bool value)
+    {
+        ResetCoffeeReadyState();
+        UpdateAll();
+    }
+
+    private void ResetCoffeeReadyState()
+    {
+        BrewResultMessage = "Кофе не готово";
+        IsCoffeeReady = false;
+    }
 }

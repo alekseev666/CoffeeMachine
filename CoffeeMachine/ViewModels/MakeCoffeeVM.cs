@@ -21,7 +21,7 @@ public partial class MakeCoffeeVM : OperationViewModelBase
     private string _analysisReport = "Нажмите 'Анализировать' для WP-анализа";
 
     [ObservableProperty]
-    private double _estimatedBrewTime;
+    private double _estimatedBrewTime = 15;
 
     [ObservableProperty]
     private double _currentBrewProgress;
@@ -30,8 +30,15 @@ public partial class MakeCoffeeVM : OperationViewModelBase
     private bool _isBrewingInProgress;
 
     [ObservableProperty]
+    private bool _isCoffeeReady;
+
+    [ObservableProperty]
     private string _brewStatus = "Готов к приготовлению";
 
+    [ObservableProperty]
+    private string _brewResultMessage = "Кофе не готово";
+
+  
     [ObservableProperty]
     private CoffeeType _selectedCoffeeType = CoffeeType.Espresso;
 
@@ -137,17 +144,22 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         try
         {
             IsBrewingInProgress = true;
+            IsCoffeeReady = false; 
             BrewStatus = "Начало приготовления...";
 
             _coffeeMachine.IsMakingCoffee = true;
             UpdateCommonProperties();
             UpdateAllProperties();
 
+
             await _brewingService.BrewCoffeeAsync(SelectedCoffeeType, SugarLevel, AddMilk);
 
             ConsumeResources();
             UpdateMachineAfterBrewing();
             PostConditionMet = CheckPostConditions(oldState);
+
+            BrewResultMessage = "Кофе готов!";
+            IsCoffeeReady = true; 
         }
         finally
         {

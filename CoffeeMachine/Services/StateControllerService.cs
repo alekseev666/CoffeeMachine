@@ -20,10 +20,7 @@ namespace CoffeeMachineWPF.Services
             return _currentStatus;
         }
 
-        public void SimulateStateChange()
-        {
-            _currentStatus.HasWater = !_currentStatus.HasWater;
-        }
+
 
         public string GenerateStateAnalysisReport(MachineStatus status)
         {

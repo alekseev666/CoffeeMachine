@@ -11,13 +11,14 @@
     <UserControl.Resources>
         <!-- Локальные конвертеры -->
         <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
+        <converters:InvertedBoolToColorConverter x:Key="InvertedBoolToColorConverter"/>
         <converters:NotificationVisibilityConverter x:Key="NotificationVisibilityConverter"/>
         <converters:HasCriticalNotificationsConverter x:Key="HasCriticalNotificationsConverter"/>
         <converters:HasWarningNotificationsConverter x:Key="HasWarningNotificationsConverter"/>
         <converters:HasInfoNotificationsConverter x:Key="HasInfoNotificationsConverter"/>
     </UserControl.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,0,-457">
         <StackPanel Margin="20">
 
             <!-- ЗАГОЛОВОК -->
@@ -112,14 +113,15 @@
                     <Border Background="#F8F9FA" BorderBrush="#DEE2E6" BorderThickness="1" 
                Margin="0,15,0,0" Padding="10">
                         <StackPanel>
-                            <TextBlock Text="Формула CanOperate:" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                            <TextBlock Text="CanOperate = HasWater ∧ HasCoffee ∧ HasCups ∧ IsHeated ∧ IsClean" 
-                          FontFamily="Consolas" FontSize="12"/>
+                            <TextBlock Text="Формула" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                            <TextBlock Text="CanMakeCoffee = HasWater ∧ HasCoffee ∧ HasCups ∧ IsHeated ∧ IsClean" 
+                               FontFamily="Consolas" FontSize="12"/>
                             <TextBlock Text="{Binding CurrentStatus.CanOperate, StringFormat='Результат: {0}'}" 
-                          FontWeight="Bold" 
-                          Foreground="{Binding CurrentStatus.CanOperate, Converter={StaticResource BoolToColorConverter}}"
-                          Margin="0,5,0,0"/>
+                               FontWeight="Bold" 
+                               Foreground="{Binding CurrentStatus.CanOperate, Converter={StaticResource InvertedBoolToColorConverter}}"
+                               Margin="0,5,0,0"/>
                         </StackPanel>
+
                     </Border>
                 </StackPanel>
             </GroupBox>
@@ -216,25 +218,7 @@
                     </Button.Style>
                 </Button>
 
-                <Button Content="🔄 Симулировать переходы" 
-                       Command="{Binding SimulateTransitionsCommand}"
-                       Background="#9B59B6"
-                       Foreground="White"
-                       FontSize="14"
-                       FontWeight="SemiBold"
-                       Padding="20,12"
-                       BorderThickness="0">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Background" Value="#9B59B6"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#8E44AD"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
+                
             </StackPanel>
 
             <!-- ОБЛАСТЬ РЕЗУЛЬТАТОВ АНАЛИЗА -->

@@ -48,22 +48,6 @@ namespace CoffeeMachineWPF.ViewModels
                 StateAnalysisReport = $"Ошибка анализа: {ex.Message}";
             }
         }
-
-        [RelayCommand]
-        private void SimulateTransitions()
-        {
-            try
-            {
-                _stateController.SimulateStateChange();
-                UpdateStatus();
-                AnalyzeState();
-            }
-            catch (Exception ex)
-            {
-                StateAnalysisReport = $"Ошибка симуляции: {ex.Message}";
-            }
-        }
-
         private void UpdateStatus()
         {
             CurrentStatus = _stateController.GetCurrentStatus();

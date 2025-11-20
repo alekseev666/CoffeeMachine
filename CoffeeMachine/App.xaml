@@ -20,5 +20,9 @@
         <DataTemplate DataType="{x:Type vm:StateControllerVM}">
             <views:StateControllerView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AppInfoVM}">
+            <views:AppInfoView />
+        </DataTemplate>
     </Application.Resources>
+    
 </Application>

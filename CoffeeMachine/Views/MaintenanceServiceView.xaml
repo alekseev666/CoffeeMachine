@@ -16,6 +16,7 @@
         <converters:MaintenanceTypeDescriptionConverter x:Key="MaintenanceTypeDescriptionConverter"/>
         <converters:MaintenanceEffectConverter x:Key="MaintenanceEffectConverter"/>
         <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
+        <converters:IsDeepCleaningConverter x:Key="IsDeepCleaningConverter"/>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
 
         <Style x:Key="IndicatorStyle" TargetType="Border">
@@ -46,7 +47,10 @@
                       Margin="0,0,0,20"/>
 
             <!-- Статус машины -->
-            <GroupBox Header="Статус кофемашины" FontWeight="SemiBold" Margin="0,0,0,15">
+            <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Статус кофемашины" HelpText="Текущий статус машины: уровень износа, здоровье компонентов и индикатор исправности."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <Border Background="{Binding StatusColor}" 
                            CornerRadius="5" 
@@ -62,7 +66,10 @@
             </GroupBox>
 
             <!-- Состояние износа -->
-            <GroupBox Header="Состояние износа" FontWeight="SemiBold" Margin="0,0,0,15">
+            <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Состояние износа" HelpText="Показывает текущий уровень износа и влияние выбранного типа обслуживания на износ."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -113,7 +120,10 @@
             </GroupBox>
 
             <!-- Текущее состояние машины -->
-            <GroupBox Header="Текущее состояние машины" FontWeight="SemiBold" Margin="0,0,0,15">
+            <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Текущее состояние машины" HelpText="Уровень отходов и счётчик выполненных обслуживаний; полезно для оценки необходимости обслуживания."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -149,7 +159,10 @@
             </GroupBox>
 
             <!-- Выбор типа обслуживания -->
-            <GroupBox Header="Тип обслуживания" FontWeight="SemiBold" Margin="0,0,0,15">
+            <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Тип обслуживания" HelpText="Выберите тип обслуживания: очистка, глубокая очистка, калибровка и т.д. Описание и влияние отображаются ниже."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <ComboBox ItemsSource="{Binding AvailableMaintenanceTypes}"
                              SelectedItem="{Binding SelectedMaintenanceType}"
@@ -172,12 +185,16 @@
             </GroupBox>
 
             <!-- Дополнительные опции -->
-            <GroupBox Header="Дополнительные опции" FontWeight="SemiBold" Margin="0,0,0,15">
+            <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Дополнительные опции" HelpText="Опции, применяемые при обслуживании (например, слив воды или сброс статистики)."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <CheckBox Content="Слить остатки воды из системы" 
-                             IsChecked="{Binding DrainWater}"
-                             FontWeight="Normal"
-                             Margin="0,5"/>
+                         IsChecked="{Binding DrainWater}"
+                         IsEnabled="{Binding SelectedMaintenanceType, Converter={StaticResource IsDeepCleaningConverter}}"
+                         FontWeight="Normal"
+         Margin="0,5"/>
 
                     <CheckBox Content="Сбросить статистику напитков" 
                              IsChecked="{Binding ResetStatistics}"
@@ -187,7 +204,10 @@
             </GroupBox>
 
             <!-- Предусловия -->
-            <GroupBox Header="Проверка предусловий" FontWeight="SemiBold" Margin="0,0,0,15">
+            <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Проверка предусловий" HelpText="Условия, необходимые для выполнения обслуживания: машина не в процессе приготовления, наличие расходных материалов и т.д."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <StackPanel>
                         <!-- Единственное обязательное условие -->
@@ -280,7 +300,10 @@
             </Button>
 
             <!-- Постусловие -->
-            <GroupBox Header="Результат выполнения" FontWeight="SemiBold">
+            <GroupBox FontWeight="SemiBold">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Результат выполнения" HelpText="Показывает, успешно ли выполнено обслуживание и какие параметры были изменены."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <Border Background="{Binding PostConditionMet, Converter={StaticResource PostConditionColorConverter}}"
                            Style="{StaticResource IndicatorStyle}">

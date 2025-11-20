@@ -15,15 +15,18 @@ namespace CoffeeMachineWPF.ViewModels
             AdditionIngredientsVM additionIngredientsVM,
             MaintenanceServiceVM maintenanceServiceVM,
             CycleAnalysisVM cycleAnalysisVM,
-            StateControllerVM stateControllerVM)
+            StateControllerVM stateControllerVM,
+            AppInfoVM appInfoVM)
         {
             Operations = new ObservableCollection<IOperationViewModel>
             {
+                
                 makeCoffeeVM,
                 additionIngredientsVM,
                 maintenanceServiceVM,
                 cycleAnalysisVM,
-                stateControllerVM
+                stateControllerVM,
+                appInfoVM
             };
 
             SelectedOperation = Operations.FirstOrDefault();

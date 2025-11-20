@@ -23,10 +23,12 @@
                       Foreground="#2C3E50"/>
 
             <!-- ВЫБОР ПРОЦЕССА -->
-            <GroupBox Header="Выбор процесса для анализа" 
-                     BorderBrush="#BDC3C7" 
+            <GroupBox BorderBrush="#BDC3C7" 
                      BorderThickness="1"
                      Padding="15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Выбор процесса для анализа" HelpText="Выберите цикл для анализа: нагрев воды, очистка баков или тестирование дозаторов. Задайте параметры и нажмите анализ."/>
+                </GroupBox.Header>
                 <StackPanel>
                     <ComboBox ItemsSource="{Binding AvailableProcesses}"
              SelectedItem="{Binding SelectedProcess}"
@@ -172,10 +174,12 @@
             </GroupBox>
 
             <!-- ОБЛАСТЬ РЕЗУЛЬТАТОВ -->
-            <GroupBox Header="Результаты анализа" 
-                     BorderBrush="#BDC3C7" 
+            <GroupBox BorderBrush="#BDC3C7" 
                      BorderThickness="1"
                      Padding="15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Результаты анализа" HelpText="Отчёт анализа выбранного процесса с кодом, инвариантами и выводами по корректности и безопасности."/>
+                </GroupBox.Header>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" 
                              MaxHeight="400">
                     <TextBox Text="{Binding AnalysisReport}" 

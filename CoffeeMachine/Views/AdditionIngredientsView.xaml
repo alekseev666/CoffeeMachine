@@ -36,15 +36,21 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="20">
-            <!-- Заголовок -->
-            <TextBlock Text="{Binding OperationName}" 
-                      FontSize="20" 
-                      FontWeight="Bold"
-                      Foreground="#333"
-                      Margin="0,0,0,20"/>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,20" VerticalAlignment="Center">
+                <TextBlock Text="{Binding OperationName}" 
+              FontSize="20" 
+              FontWeight="Bold"
+              Foreground="#333"
+              VerticalAlignment="Center"/>
+
+               
+            </StackPanel>
 
             <!-- Статус машины -->
-            <GroupBox Header="Статус кофемашины" FontWeight="SemiBold" Margin="0,0,0,15">
+            <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Статус кофемашины" HelpText="Кратко: текущий статус машины, уровень отходов и износ."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <Border Background="{Binding StatusColor}" 
                            CornerRadius="5" 
@@ -79,7 +85,10 @@
             </GroupBox>
 
             <!-- Выбор ингредиента -->
-            <GroupBox Header="Выберите ингредиент" FontWeight="SemiBold" Margin="0,0,0,15">
+            <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Выберите ингредиент" HelpText="Выберите тип ингредиента для пополнения и смотрите текущие параметры."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <ComboBox ItemsSource="{Binding AvailableIngredientTypes}"
                              SelectedItem="{Binding SelectedIngredientType}"
@@ -105,7 +114,10 @@
             </GroupBox>
 
             <!-- Настройки пополнения -->
-            <GroupBox Header="Настройки пополнения" FontWeight="SemiBold" Margin="0,0,0,15">
+            <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Настройки пополнения" HelpText="Режимы пополнения: вручную указать количество или заполнить до максимума."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <!-- режим пополнения -->
                     <RadioButton Content="Указать количество" 
@@ -157,7 +169,10 @@
             </GroupBox>
 
             <!-- Предусловия -->
-            <GroupBox Header="Проверка предусловий" FontWeight="SemiBold" Margin="0,0,0,15">
+            <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Проверка предусловий" HelpText="Проверяются общие и специфические предусловия перед пополнением."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <StackPanel>
                         <!-- Базовые предусловия из родительского класса -->
@@ -239,7 +254,10 @@
             </Button>
 
             <!-- Постусловие -->
-            <GroupBox Header="Результат выполнения" FontWeight="SemiBold">
+            <GroupBox FontWeight="SemiBold">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Результат выполнения" HelpText="Показывает, успешно ли прошла операция пополнения."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <Border Background="{Binding PostConditionMet, Converter={StaticResource PostConditionColorConverter}}"
                            Style="{StaticResource IndicatorStyle}">

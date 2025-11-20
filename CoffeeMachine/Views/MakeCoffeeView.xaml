@@ -41,7 +41,10 @@
                       FontWeight="Bold"
                       Foreground="#333"
                       Margin="0,0,0,20"/>
-            <GroupBox Header="WP-анализ алгоритмов (ЛР-2)" FontWeight="SemiBold" Margin="0,0,0,15">
+            <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="WP-анализ алгоритмов (ЛР-2)" HelpText="Выполняет WP-аналитический разбор алгоритма приготовления: предусловия, постусловия, инварианты и отчёт по верификации."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <Button Content="Анализировать алгоритм" 
                Command="{Binding AnalyzeAlgorithmCommand}"
@@ -63,7 +66,10 @@
                     </Border>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Header="Статус кофемашины" FontWeight="SemiBold" Margin="0,0,0,15">
+            <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Статус кофемашины" HelpText="Отображает текущие ресурсы и состояния: вода, кофе, молоко, износ и готовность к работе."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <Border Background="{Binding StatusColor}" 
                            CornerRadius="5" 
@@ -98,7 +104,10 @@
                     </Grid>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Header="Выбор напитка" FontWeight="SemiBold" Margin="0,0,0,15">
+            <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Выбор напитка" HelpText="Выберите тип напитка. Рецепт определяет требуемые ресурсы (вода, кофе, молоко) и влияет на время приготовления."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <ComboBox ItemsSource="{Binding AvailableCoffeeTypes}"
                          SelectedItem="{Binding SelectedCoffeeType}"
@@ -136,7 +145,10 @@
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Header="Настройки напитка" FontWeight="SemiBold" Margin="0,0,0,15">
+            <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Настройки напитка" HelpText="Настройте уровень сахара и опции, которые влияют на длительность и ресурсы приготовления."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <TextBlock Text="Уровень сахара:" 
                               FontWeight="Normal"
@@ -167,7 +179,10 @@
 
                 </StackPanel>
             </GroupBox>
-            <GroupBox Header="⏱️ Время приготовления" FontWeight="SemiBold" Margin="0,0,0,15">
+            <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="⏱️ Время приготовления" HelpText="Отображает расчётное время приготовления и прогресс процесса; факторы: тип кофе, сахар и износ машины."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -221,7 +236,10 @@
                     </Grid>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Header="Проверка предусловий" FontWeight="SemiBold" Margin="0,0,0,15">
+            <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Проверка предусловий" HelpText="Список условий, необходимых для запуска приготовления (ресурсы, состояние машины, стаканчики и т.д.)."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,2">
@@ -297,7 +315,10 @@
                 </Button.Style>
             </Button>
 
-            <GroupBox Header="Результат выполнения" FontWeight="SemiBold">
+            <GroupBox FontWeight="SemiBold">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Результат выполнения" HelpText="Показывает успешность операции и детали выполненного приготовления."/>
+                </GroupBox.Header>
                 <StackPanel Margin="10">
                     <Border Background="{Binding PostConditionMet, Converter={StaticResource PostConditionColorConverter}}"
                Style="{StaticResource IndicatorStyle}">

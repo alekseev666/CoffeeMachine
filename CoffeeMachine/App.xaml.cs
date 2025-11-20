@@ -42,6 +42,7 @@ namespace CoffeeMachineWPF
             services.AddTransient<MaintenanceServiceVM>();
             services.AddTransient<CycleAnalysisVM>();
             services.AddTransient<StateControllerVM>();
+            services.AddTransient<AppInfoVM>();
             services.AddSingleton<MainWindowVM>();
 
             // Views

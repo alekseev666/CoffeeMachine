@@ -29,9 +29,11 @@
                       Margin="0,0,0,15"/>
 
             <!-- ТЕКУЩИЙ РЕЖИМ -->
-            <GroupBox Header="Текущий режим работы" 
-                     Padding="15"
+            <GroupBox Padding="15"
                      Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Текущий режим работы" HelpText="Показывает текущий режим работы: Нормальный, Обслуживание, Авария или Ожидание. Нажмите кнопку обновления для перерасчёта статуса."/>
+                </GroupBox.Header>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding CurrentModeDisplay}"
                               FontSize="16"
@@ -61,9 +63,11 @@
             </GroupBox>
 
             <!-- ЛОГИЧЕСКИЕ ПЕРЕМЕННЫЕ -->
-            <GroupBox Header="Логические переменные состояния" 
-         Padding="15"
+            <GroupBox Padding="15"
          Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Логические переменные состояния" HelpText="Отображает булевы флаги, используемые контроллером для принятия решений (наличие воды, кофе, стаканчиков, нагрев и т.д.)."/>
+                </GroupBox.Header>
                 <StackPanel>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -127,9 +131,11 @@
             </GroupBox>
 
             <!-- УВЕДОМЛЕНИЯ -->
-            <GroupBox Header="Уведомления системы" 
-                     Padding="15"
+            <GroupBox Padding="15"
                      Margin="0,0,0,15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Уведомления системы" HelpText="Критические, предупреждения и информационные сообщения о состоянии машины. Просматривайте для быстрого обнаружения проблем."/>
+                </GroupBox.Header>
                 <StackPanel>
 
                     <!-- Критические уведомления -->
@@ -222,8 +228,10 @@
             </StackPanel>
 
             <!-- ОБЛАСТЬ РЕЗУЛЬТАТОВ АНАЛИЗА -->
-            <GroupBox Header="Полный анализ состояния" 
-                     Padding="15">
+            <GroupBox Padding="15">
+                <GroupBox.Header>
+                    <local:GroupHeaderWithHelp Title="Полный анализ состояния" HelpText="Развёрнутый отчёт логического анализатора состояния машины, включает детали и рекомендации."/>
+                </GroupBox.Header>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" 
                              MaxHeight="400">
                     <TextBox Text="{Binding StateAnalysisReport}" 

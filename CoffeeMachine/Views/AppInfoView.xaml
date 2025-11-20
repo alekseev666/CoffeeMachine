@@ -1,0 +1,314 @@
+﻿<UserControl x:Class="CoffeeMachineWPF.Views.AppInfoView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:CoffeeMachineWPF.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <Style x:Key="InfoCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="#F8F9FA"/>
+            <Setter Property="BorderBrush" Value="#DEE2E6"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+
+        <Style x:Key="TermStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="Margin" Value="0,5,0,2"/>
+        </Style>
+
+        <Style x:Key="DefinitionStyle" TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+            <Setter Property="Foreground" Value="#495057"/>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto">
+        <StackPanel Margin="20">
+
+            <TextBlock Text="{Binding OperationName}" 
+                      FontSize="24" 
+                      FontWeight="Bold" 
+                      Foreground="#2C3E50"
+                      Margin="0,0,0,20"/>
+
+            <Border Style="{StaticResource InfoCardStyle}">
+                <StackPanel>
+                    <TextBlock Text="Общая информация" 
+                              FontSize="18" 
+                              FontWeight="Bold"
+                              Foreground="#2C3E50"
+                              Margin="0,0,0,10"/>
+
+  
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Назначение:" FontWeight="SemiBold"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="Курсовая работа" Margin="10,0,0,0"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Технологии:" FontWeight="SemiBold"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="WPF, MVVM, .NET 8" Margin="10,0,0,0"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource InfoCardStyle}">
+                <StackPanel>
+                    <TextBlock Text="Термины" 
+                              FontSize="18" 
+                              FontWeight="Bold"
+                              Foreground="#2C3E50"
+                              Margin="0,0,0,15"/>
+
+              
+                    <!-- Основные термины -->
+                    <StackPanel>
+                        <TextBlock Text="Предусловие (Precondition)" Style="{StaticResource TermStyle}"/>
+                        <TextBlock Text="Условие, которое должно выполняться перед выполнением операции. Обозначает требования к состоянию системы до начала выполнения. В контексте кофемашины: наличие ингредиентов, исправность оборудования, допустимый уровень отходов."
+                                  Style="{StaticResource DefinitionStyle}"/>
+
+                        <TextBlock Text="Постусловие (Postcondition)" Style="{StaticResource TermStyle}"/>
+                        <TextBlock Text="Условие, которое должно выполняться после выполнения операции. Описывает ожидаемое состояние системы после завершения. Например: уменьшение запасов ингредиентов, увеличение счетчика приготовленных напитков."
+                                  Style="{StaticResource DefinitionStyle}"/>
+
+                        <TextBlock Text="Наиболее слабое предусловие (Weakest Precondition)" Style="{StaticResource TermStyle}"/>
+                        <TextBlock Text="Минимальное условие, которое должно быть истинным перед выполнением операции, чтобы гарантировать истинность постусловия после её выполнения. Вычисляется путем 'протягивания' постусловия через программу в обратном порядке."
+                                  Style="{StaticResource DefinitionStyle}"/>
+
+                        <TextBlock Text="Инвариант цикла (Loop Invariant)" Style="{StaticResource TermStyle}"/>
+                        <TextBlock Text="Условие, которое сохраняется истинным перед каждой итерацией цикла. Используется для доказательства корректности циклических алгоритмов. В кофемашине: температурные ограничения при нагреве воды, границы уровня отходов при очистке."
+                                  Style="{StaticResource DefinitionStyle}"/>
+
+                        <TextBlock Text="Вариант цикла (Loop Variant)" Style="{StaticResource TermStyle}"/>
+                        <TextBlock Text="Целочисленное выражение, которое убывает с каждой итерацией цикла. Гарантирует завершение цикла. Пример: разница между текущей и целевой температурой при нагреве воды."
+                                  Style="{StaticResource DefinitionStyle}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Описание вкладок приложения -->
+            <Border Style="{StaticResource InfoCardStyle}">
+                <StackPanel>
+                    <TextBlock Text="Описание вкладок приложения" 
+                              FontSize="18" 
+                              FontWeight="Bold"
+                              Foreground="#2C3E50"
+                              Margin="0,0,0,15"/>
+
+                    <!-- Приготовление кофе -->
+                    <TextBlock Text="Приготовление напитков" 
+                              FontSize="16" 
+                              FontWeight="SemiBold"
+                              Foreground="#2C3E50"
+                              Margin="0,10,0,5"/>
+                    <TextBlock Text="Основная операция кофемашины - приготовление различных видов кофейных напитков. Реализует формальную верификацию через WP-анализ алгоритма приготовления."
+                              Style="{StaticResource DefinitionStyle}"/>
+                    <StackPanel Margin="10,0,0,0">
+                        <TextBlock Text="• Проверка предусловий: наличие ингредиентов, исправность оборудования" FontWeight="SemiBold" Margin="0,0,0,2"/>
+                        <TextBlock Text="• WP-анализ: вычисление слабейшего предусловия для гарантии успешного приготовления" Margin="10,0,0,5"/>
+                        <TextBlock Text="• Верификация постусловий: корректное расходование ресурсов, обновление статистики" Margin="10,0,0,5"/>
+                    </StackPanel>
+
+                    <!-- Пополнение ингредиентов -->
+                    <TextBlock Text="Пополнение ингредиентов" 
+                              FontSize="16" 
+                              FontWeight="SemiBold"
+                              Foreground="#2C3E50"
+                              Margin="0,15,0,5"/>
+                    <TextBlock Text="Операция добавления ингредиентов в соответствующие контейнеры кофемашины. Демонстрирует применение контрактного программирования."
+                              Style="{StaticResource DefinitionStyle}"/>
+                    <StackPanel Margin="10,0,0,0">
+                        <TextBlock Text="• Предусловия: валидный тип ингредиента, положительное количество, отсутствие переполнения" FontWeight="SemiBold" Margin="0,0,0,2"/>
+                        <TextBlock Text="• Постусловия: точное увеличение количества ингредиентов, сохранение инвариантов емкости" Margin="10,0,0,5"/>
+                        <TextBlock Text="• Инварианты: максимальная емкость контейнеров, целостность системы" Margin="10,0,0,5"/>
+                    </StackPanel>
+
+                    <!-- Техническое обслуживание -->
+                    <TextBlock Text="Техническое обслуживание" 
+                              FontSize="16" 
+                              FontWeight="SemiBold"
+                              Foreground="#2C3E50"
+                              Margin="0,15,0,5"/>
+                    <TextBlock Text="Комплекс операций по обслуживанию и ремонту кофемашины. Иллюстрирует верификацию сложных многошаговых процессов."
+                              Style="{StaticResource DefinitionStyle}"/>
+                    <StackPanel Margin="10,0,0,0">
+                        <TextBlock Text="• Предусловия: доступность обслуживания, наличие отходов, активация режима обслуживания" FontWeight="SemiBold" Margin="0,0,0,2"/>
+                        <TextBlock Text="• Постусловия: сброс отходов, уменьшение износа, восстановление работоспособности" Margin="10,0,0,5"/>
+                        <TextBlock Text="• Инварианты: сохранение функциональности, невозможность ухудшения состояния" Margin="10,0,0,5"/>
+                    </StackPanel>
+
+                    <!-- Анализ циклов -->
+                    <TextBlock Text="Анализ циклов" 
+                              FontSize="16" 
+                              FontWeight="SemiBold"
+                              Foreground="#2C3E50"
+                              Margin="0,15,0,5"/>
+                    <TextBlock Text="Специализированный модуль для верификации циклических процессов в кофемашине. Реализует формальные методы доказательства корректности циклов."
+                              Style="{StaticResource DefinitionStyle}"/>
+                    <StackPanel Margin="10,0,0,0">
+                        <TextBlock Text="• Инварианты циклов: условия, сохраняющиеся на каждой итерации" FontWeight="SemiBold" Margin="0,0,0,2"/>
+                        <TextBlock Text="• Варианты циклов: гарантии завершения циклических процессов" Margin="10,0,0,5"/>
+                        <TextBlock Text="• Верификационные условия: доказательство частичной и тотальной корректности" Margin="10,0,0,5"/>
+                    </StackPanel>
+
+                    <!-- Логический контроллер -->
+                    <TextBlock Text="Логический контроллер" 
+                              FontSize="16" 
+                              FontWeight="SemiBold"
+                              Foreground="#2C3E50"
+                              Margin="0,15,0,5"/>
+                    <TextBlock Text="Система мониторинга и анализа состояния кофемашины. Демонстрирует применение формальных методов к анализу состояний системы."
+                              Style="{StaticResource DefinitionStyle}"/>
+                    <StackPanel Margin="10,0,0,0">
+                        <TextBlock Text="• Анализ состояний: нормальный режим, обслуживание, аварийный режим" FontWeight="SemiBold" Margin="0,0,0,2"/>
+                        <TextBlock Text="• Формальная верификация: проверка корректности переходов между состояниями" Margin="10,0,0,5"/>
+                        <TextBlock Text="• Генерация отчетов: формализованное описание текущего состояния системы" Margin="10,0,0,5"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource InfoCardStyle}">
+                <StackPanel>
+                    
+
+                
+                    <StackPanel>
+                        <!-- ЛР1 -->
+                        <TextBlock Text="Лабораторная работа 1: «Контракты в интерфейсе»" 
+                      FontSize="16" 
+                      FontWeight="SemiBold"
+                      Foreground="#2C3E50"
+                      Margin="0,10,0,5"/>
+                        <TextBlock Text="Заложила основу системы формальной верификации через предусловия (Preconditions) и постусловия (Postconditions)."
+                      Style="{StaticResource DefinitionStyle}"/>
+                        <StackPanel Margin="10,0,0,0">
+                            <TextBlock Text="• Реализована в операциях: Приготовление кофе, Пополнение ингредиентов" Margin="0,0,0,2"/>
+                            <TextBlock Text="• Индикаторы выполнения Pre/Post условий в реальном времени" Margin="0,0,0,2"/>
+                            <TextBlock Text="• Формализация контрактов для каждой операции" Margin="0,0,0,5"/>
+                        </StackPanel>
+
+                        <!-- ЛР2 -->
+                        <TextBlock Text="Лабораторная работа 2: «Движок слабейшего предусловия (WP)»" 
+                      FontSize="16" 
+                      FontWeight="SemiBold"
+                      Foreground="#2C3E50"
+                      Margin="0,10,0,5"/>
+                        <TextBlock Text="Реализовала механизм вычисления наиболее слабого предусловия для гарантии выполнения постусловий."
+                      Style="{StaticResource DefinitionStyle}"/>
+                        <StackPanel Margin="10,0,0,0">
+                            <TextBlock Text="• Интегрирован в анализ алгоритмов приготовления кофе" Margin="0,0,0,2"/>
+                            <TextBlock Text="• Автоматическая генерация триад Хоара {Pre} P {Post}" Margin="0,0,0,2"/>
+                            <TextBlock Text="• Пошаговый трейс преобразования условий" Margin="0,0,0,5"/>
+                        </StackPanel>
+
+                        <!-- ЛР3 -->
+                        <TextBlock Text="Лабораторная работа 3: «Циклы под микроскопом»" 
+                      FontSize="16" 
+                      FontWeight="SemiBold"
+                      Foreground="#2C3E50"
+                      Margin="0,10,0,5"/>
+                        <TextBlock Text="Добавила формальную верификацию циклических процессов через инварианты и варианты."
+                      Style="{StaticResource DefinitionStyle}"/>
+                        <StackPanel Margin="10,0,0,0">
+                            <TextBlock Text="• Реализована во вкладке 'Анализ циклов'" Margin="0,0,0,2"/>
+                            <TextBlock Text="• Инварианты для нагрева воды, очистки баков, тестирования дозаторов" Margin="0,0,0,2"/>
+                            <TextBlock Text="• Вариант-функции для гарантии завершения циклов" Margin="0,0,0,5"/>
+                        </StackPanel>
+
+                        <!-- ЛР4 -->
+                        <TextBlock Text="Лабораторная работа 4: «Логические функции»" 
+                      FontSize="16" 
+                      FontWeight="SemiBold"
+                      Foreground="#2C3E50"
+                      Margin="0,10,0,5"/>
+                        <TextBlock Text="Реализовала логический анализ состояний системы и формальную проверку эквивалентности условий."
+                      Style="{StaticResource DefinitionStyle}"/>
+                        <StackPanel Margin="10,0,0,0">
+                            <TextBlock Text="• Воплощена во вкладке 'Логический контроллер'" Margin="0,0,0,2"/>
+                            <TextBlock Text="• Анализ состояний кофемашины (нормальный/обслуживание/аварийный)" Margin="0,0,0,2"/>
+                            <TextBlock Text="• Формальная верификация переходов между режимами работы" Margin="0,0,0,5"/>
+                        </StackPanel>
+
+                       
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource InfoCardStyle}">
+                <StackPanel>
+                    <TextBlock Text="Руководство пользователя" 
+                              FontSize="18" 
+                              FontWeight="Bold"
+                              Foreground="#2C3E50"
+                              Margin="0,0,0,15"/>
+
+                    <StackPanel>
+                        <TextBlock Text="1. Приготовление кофе" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBlock Text="• Выберите тип напитка и уровень сахара" Margin="10,0,0,0"/>
+                        <TextBlock Text="• Проверьте выполнение всех предусловий (зеленые индикаторы)" Margin="10,0,0,0"/>
+                        <TextBlock Text="• Нажмите 'Приготовить кофе' и наблюдайте за процессом верификации" Margin="10,0,0,5"/>
+                        <TextBlock Text="• Убедитесь в выполнении постусловий после завершения" Margin="10,0,0,5"/>
+
+                        <TextBlock Text="2. Пополнение ингредиентов" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                        <TextBlock Text="• Выберите тип ингредиента для пополнения" Margin="10,0,0,0"/>
+                        <TextBlock Text="• Укажите количество или выберите заполнение до максимума" Margin="10,0,0,0"/>
+                        <TextBlock Text="• Проверьте предусловия и выполните пополнение" Margin="10,0,0,5"/>
+                        <TextBlock Text="• Убедитесь в корректном увеличении количества ингредиентов" Margin="10,0,0,5"/>
+
+                        <TextBlock Text="3. Техническое обслуживание" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                        <TextBlock Text="• Выберите тип обслуживания" Margin="10,0,0,0"/>
+                        <TextBlock Text="• Настройте дополнительные опции (сброс статистики, слив воды)" Margin="10,0,0,0"/>
+                        <TextBlock Text="• Выполните обслуживание при доступности (зеленые индикаторы)" Margin="10,0,0,5"/>
+                        <TextBlock Text="• Проверьте восстановление работоспособности оборудования" Margin="10,0,0,5"/>
+
+                        <TextBlock Text="4. Анализ циклов" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                        <TextBlock Text="• Выберите циклический процесс для анализа (нагрев, очистка, тестирование)" Margin="10,0,0,0"/>
+                        <TextBlock Text="• Настройте параметры процесса (температуры, скорости, уровни)" Margin="10,0,0,0"/>
+                        <TextBlock Text="• Запустите анализ и изучите формальную верификацию цикла" Margin="10,0,0,0"/>
+                        <TextBlock Text="• Ознакомьтесь с инвариантами и вариантами процесса" Margin="10,0,0,5"/>
+
+                        <TextBlock Text="5. Логический контроллер" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                        <TextBlock Text="• Наблюдайте за текущим состоянием кофемашины" Margin="10,0,0,0"/>
+                        <TextBlock Text="• Анализируйте формальный отчет о состоянии системы" Margin="10,0,0,0"/>
+                        <TextBlock Text="• Изучите режимы работы и переходы между ними" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Контакты и поддержка -->
+            <Border Style="{StaticResource InfoCardStyle}">
+                <StackPanel>
+                    <TextBlock Text="Выполнили:" 
+                              FontSize="18" 
+                              FontWeight="Bold"
+                              Foreground="#2C3E50"
+                              Margin="0,0,0,15"/>
+
+                    <StackPanel>
+                        <TextBlock Text="Алексеев Кирилл" Margin="10,0,0,0"/>
+                        <TextBlock Text="Суворов Иван" Margin="10,0,0,0"/>
+                        <TextBlock Text="Цветкова Вероника" Margin="10,0,0,0"/>
+                        <TextBlock Text="Маркина Виктория" Margin="10,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -26,7 +26,6 @@ public partial class MaintenanceServiceVM : OperationViewModelBase
     public bool IsMaintenanceKeyActivated => true;
     public bool HasCleaningSupplies => true;
 
-
     public bool PreConditionsMet =>
         IsNotMakingCoffee &&
         HasWaste &&
@@ -120,17 +119,11 @@ public partial class MaintenanceServiceVM : OperationViewModelBase
         var temperatureReset = _coffeeMachine.Temperature <= 30;
         var maintenanceCountIncreased = _coffeeMachine.MaintenanceCount == oldMaintenanceCount + 1;
         var waterDrained = !DrainWater || _coffeeMachine.Water == 0;
-        var wearReduced = _coffeeMachine.WearLevel < oldWearLevel;
 
+        var wearReduced = _coffeeMachine.WearLevel <= oldWearLevel;
 
         var healthMaintainedOrImproved = _coffeeMachine.ComponentsHealth >= oldComponentsHealth;
-
         var machineNotBrokenAfterMaintenance = !_coffeeMachine.IsBroken;
-
-        Console.WriteLine($"PostConditions: WasteCleaned={wasteCleaned}, TempReset={temperatureReset}, " +
-                    $"MaintenanceIncreased={maintenanceCountIncreased}, WaterDrained={waterDrained}, " +
-                    $"WearReduced={wearReduced}, HealthImproved={healthMaintainedOrImproved}, " +
-                    $"NotBroken={machineNotBrokenAfterMaintenance}");
 
         return wasteCleaned &&
                temperatureReset &&

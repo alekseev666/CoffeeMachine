@@ -442,22 +442,9 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         NotifyPreConditionsChanged();
     }
 
-<<<<<<< HEAD
-=======
-    /// <summary>
-    /// Обработчик изменения флага добавления молока
-    /// </summary>
-    /// <param name="value">Новое значение флага</param>
-    partial void OnAddMilkChanged(bool value)
-    {
-        ResetCoffeeReadyState();
-        UpdateAll();
-    }
-
     /// <summary>
     /// Сброс состояния готовности кофе
     /// </summary>
->>>>>>> 2daafbb (Доработана xml-документация)
     private void ResetCoffeeReadyState()
     {
         BrewResultMessage = "Кофе не готово";

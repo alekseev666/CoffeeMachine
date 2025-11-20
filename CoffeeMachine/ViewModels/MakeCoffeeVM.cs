@@ -5,7 +5,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace CoffeeMachineWPF.ViewModels;
-
+/// <summary>
+/// Модель представления для приготовления кофе
+/// </summary>
 public partial class MakeCoffeeVM : OperationViewModelBase
 {
     private const double BASE_WEAR_AMOUNT = 0.5;
@@ -17,52 +19,116 @@ public partial class MakeCoffeeVM : OperationViewModelBase
     private readonly WPAnalyzer _wpAnalyzer;
     private CoffeeRecipe _currentRecipe;
 
+    /// <summary>
+    /// Отчет WP-анализа алгоритма приготовления
+    /// </summary>
     [ObservableProperty]
     private string _analysisReport = "Нажмите 'Анализировать' для WP-анализа";
 
+    /// <summary>
+    /// Расчетное время приготовления в секундах
+    /// </summary>
     [ObservableProperty]
     private double _estimatedBrewTime = 15;
 
+    /// <summary>
+    /// Текущий прогресс приготовления в процентах
+    /// </summary>
     [ObservableProperty]
     private double _currentBrewProgress;
 
+    /// <summary>
+    /// Выполнение процесса приготовления
+    /// </summary>
     [ObservableProperty]
     private bool _isBrewingInProgress;
 
+    /// <summary>
+    /// Готовность кофе
+    /// </summary>
     [ObservableProperty]
     private bool _isCoffeeReady;
 
+    /// <summary>
+    /// Статус процесса приготовления
+    /// </summary>
     [ObservableProperty]
     private string _brewStatus = "Готов к приготовлению";
 
+    /// <summary>
+    /// Сообщение о результате приготовления
+    /// </summary>
     [ObservableProperty]
     private string _brewResultMessage = "Кофе не готово";
 
-  
+    /// <summary>
+    /// Выбранный тип кофе
+    /// </summary>
     [ObservableProperty]
     private CoffeeType _selectedCoffeeType = CoffeeType.Espresso;
 
+    /// <summary>
+    /// Уровень сахара в порциях
+    /// </summary>
     [ObservableProperty]
     private int _sugarLevel;
 
 
+    /// <summary>
+    /// Выполнение постусловий операции
+    /// </summary>
     [ObservableProperty]
     private bool _postConditionMet;
 
+    /// <summary>
+    /// Название операции приготовления напитка
+    /// </summary>
     public override string OperationName => "Приготовление напитка";
+
+    /// <summary>
+    /// Доступные типы кофе
+    /// </summary>
     public IEnumerable<CoffeeType> AvailableCoffeeTypes => Enum.GetValues<CoffeeType>();
+
+    /// <summary>
+    /// Текущий рецепт приготовления кофе
+    /// </summary>
     public CoffeeRecipe CurrentRecipe => _currentRecipe;
 
+    /// <summary>
+    /// Признак достаточного количества воды
+    /// </summary>
     public bool HasEnoughWater => _coffeeMachine.Water >= _currentRecipe.RequiredWater;
+
+    /// <summary>
+    /// Признак достаточного количества кофе
+    /// </summary>
     public bool HasEnoughCoffee => _coffeeMachine.Coffee >= _currentRecipe.RequiredCoffee;
 
+    /// <summary>
+    /// Признак достаточного количества молока
+    /// </summary>
     public bool HasEnoughMilk => _coffeeMachine.Milk >= _currentRecipe.RequiredMilk;
+
+    /// <summary>
+    /// Признак наличия стаканчиков
+    /// </summary>
     public bool HasCups => _coffeeMachine.Cups > 0;
+
+    /// <summary>
+    /// Признак достаточного количества сахара
+    /// </summary>
     public bool HasSugar => _coffeeMachine.Sugar >= SugarLevel;
 
+    /// <summary>
+    /// Признак возможности добавления молока для выбранного типа кофе
+    /// </summary>
     public bool CanAddMilk => SelectedCoffeeType != CoffeeType.Espresso &&
                             SelectedCoffeeType != CoffeeType.Americano;
 
+    /// <summary>
+    /// Признак выполнения всех предусловий операции
+    /// </summary>
     public bool PreConditionsMet =>
         IsNotBroken &&
         IsNotMakingCoffee &&
@@ -72,6 +138,13 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         HasCups &&
         HasSugar;
 
+    /// <summary>
+    /// Создание модели представления для приготовления кофе
+    /// </summary>
+    /// <param name="coffeeMachine">Кофемашина для приготовления</param>
+    /// <param name="brewingService">Сервис приготовления кофе</param>
+    /// <param name="validator">Валидатор проверки условий</param>
+    /// <param name="wpAnalyzer">Анализатор weakest precondition</param>
     public MakeCoffeeVM(
         CoffeeMachine coffeeMachine,
         CoffeeBrewingService brewingService,
@@ -90,6 +163,9 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         UpdateCurrentRecipe();
     }
 
+    /// <summary>
+    /// Настройка обработчиков событий
+    /// </summary>
     private void SetupEventHandlers()
     {
         _brewingService.BrewProgressChanged += progress => CurrentBrewProgress = progress;
@@ -98,11 +174,20 @@ public partial class MakeCoffeeVM : OperationViewModelBase
 
         PropertyChanged += OnPropertyChanged;
     }
+
+    /// <summary>
+    /// Обработчик изменения выбранного типа кофе
+    /// </summary>
+    /// <param name="value">Новый тип кофе</param>
     partial void OnSelectedCoffeeTypeChanged(CoffeeType value)
     {
         ResetCoffeeReadyState();
         UpdateAll();
     }
+
+    /// <summary>
+    /// Обновление всех свойств модели представления
+    /// </summary>
     private void UpdateAll()
     {
         UpdateEstimatedTime();
@@ -110,6 +195,12 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         NotifyPreConditionsChanged();
         OnPropertyChanged(nameof(CanAddMilk)); 
     }
+
+    /// <summary>
+    /// Обработчик изменения свойств модели представления
+    /// </summary>
+    /// <param name="sender">Источник события</param>
+    /// <param name="e">Данные события</param>
     private void OnPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
         if (e.PropertyName is nameof(SelectedCoffeeType) or nameof(SugarLevel))
@@ -120,6 +211,9 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         }
     }
 
+    /// <summary>
+    /// Обновление текущего рецепта приготовления
+    /// </summary>
     private void UpdateCurrentRecipe()
     {
         _currentRecipe = CoffeeRecipe.GetRecipe(SelectedCoffeeType);
@@ -128,9 +222,14 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         OnPropertyChanged(nameof(HasEnoughCoffee));
     }
 
-
+    /// <summary>
+    /// Обновление расчетного времени приготовления
+    /// </summary>
     private void UpdateEstimatedTime() => EstimatedBrewTime = _coffeeMachine.CalculateBrewTime(SelectedCoffeeType, SugarLevel);
 
+    /// <summary>
+    /// Команда анализа алгоритма приготовления
+    /// </summary>
     [RelayCommand]
     private void AnalyzeAlgorithm()
     {
@@ -149,6 +248,9 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         );
     }
 
+    /// <summary>
+    /// Команда приготовления кофе
+    /// </summary>
     [RelayCommand(CanExecute = nameof(CanMakeCoffee))]
     private async Task MakeCoffeeAsync()
     {
@@ -185,6 +287,9 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         }
     }
 
+    /// <summary>
+    /// Расход ресурсов для приготовления кофе
+    /// </summary>
     private void ConsumeResources()
     {
         _coffeeMachine.Water -= _currentRecipe.RequiredWater;
@@ -194,6 +299,9 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         _coffeeMachine.Cups--;
     }
 
+    /// <summary>
+    /// Обновление состояния кофемашины после приготовления
+    /// </summary>
     private void UpdateMachineAfterBrewing()
     {
         _coffeeMachine.DrinksMade++;
@@ -203,12 +311,19 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         IncreaseMachineWear();
     }
 
+    /// <summary>
+    /// Увеличение износа оборудования
+    /// </summary>
     private void IncreaseMachineWear()
     {
         double wearAmount = CalculateWearAmount();
         _coffeeMachine.IncreaseWear(wearAmount);
     }
 
+    /// <summary>
+    /// Вычисление величины износа оборудования
+    /// </summary>
+    /// <returns>Величина износа</returns>
     private double CalculateWearAmount()
     {
         double wearAmount = BASE_WEAR_AMOUNT;
@@ -229,6 +344,10 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         return wearAmount;
     }
 
+    /// <summary>
+    /// Проверка возможности приготовления кофе
+    /// </summary>
+    /// <returns>true, если кофе может быть приготовлено</returns>
     private bool CanMakeCoffee()
     {
         var validation = _validator.Validate(SelectedCoffeeType, SugarLevel);
@@ -237,6 +356,11 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         return validation.IsValid;
     }
 
+    /// <summary>
+    /// Проверк выполнения постусловий операции приготовления
+    /// </summary>
+    /// <param name="oldState">Состояние кофемашины до приготовления</param>
+    /// <returns>true, если постусловия выполнены</returns>
     private bool CheckPostConditions(MachineState oldState)
     {
         return _coffeeMachine.Water == oldState.Water - _currentRecipe.RequiredWater &&
@@ -247,17 +371,26 @@ public partial class MakeCoffeeVM : OperationViewModelBase
                (_coffeeMachine.Milk == oldState.Milk - _currentRecipe.RequiredMilk);
     }
 
+    /// <summary>
+    /// Обработчик завершения процесса приготовления
+    /// </summary>
     private void OnBrewCompleted()
     {
         BrewStatus = "Напиток готов!";
     }
 
+    /// <summary>
+    /// Уведомление об изменении предусловий
+    /// </summary>
     private void NotifyPreConditionsChanged()
     {
         OnPropertyChanged(nameof(PreConditionsMet));
         MakeCoffeeCommand.NotifyCanExecuteChanged();
     }
 
+    /// <summary>
+    /// Обновление всех свойств модели представления
+    /// </summary>
     private void UpdateAllProperties()
     {
         
@@ -265,6 +398,10 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         UpdateCommonProperties();
     }
 
+    /// <summary>
+    /// Получение информации о ресурсах для анализа
+    /// </summary>
+    /// <returns>Словарь с информацией о ресурсах</returns>
     private Dictionary<string, (int current, int required, bool isMet)> GetResourcesInfo()
     {
         return new()
@@ -276,8 +413,16 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         };
     }
 
+    /// <summary>
+    /// Получение информации о ценах для анализа
+    /// </summary>
+    /// <returns>Словарь с информацией о ценах</returns>
     private Dictionary<string, double> GetPricesInfo() => new() { ["base"] = 20.0 };
 
+    /// <summary>
+    /// Получение информации о постусловиях для анализа
+    /// </summary>
+    /// <returns>Словарь с информацией о постусловиях</returns>
     private Dictionary<string, bool> GetPostConditionsInfo() => new()
     {
         ["Напиток приготовлен"] = PostConditionMet,
@@ -286,6 +431,10 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         ["Уровень отходов увеличен"] = PostConditionMet
     };
 
+    /// <summary>
+    /// Обработчик изменения уровня сахара
+    /// </summary>
+    /// <param name="value">Новый уровень сахара</param>
     partial void OnSugarLevelChanged(int value)
     {
         ResetCoffeeReadyState();
@@ -293,6 +442,22 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         NotifyPreConditionsChanged();
     }
 
+<<<<<<< HEAD
+=======
+    /// <summary>
+    /// Обработчик изменения флага добавления молока
+    /// </summary>
+    /// <param name="value">Новое значение флага</param>
+    partial void OnAddMilkChanged(bool value)
+    {
+        ResetCoffeeReadyState();
+        UpdateAll();
+    }
+
+    /// <summary>
+    /// Сброс состояния готовности кофе
+    /// </summary>
+>>>>>>> 2daafbb (Доработана xml-документация)
     private void ResetCoffeeReadyState()
     {
         BrewResultMessage = "Кофе не готово";

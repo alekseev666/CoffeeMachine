@@ -2,15 +2,28 @@
 
 namespace CoffeeMachineWPF.Services
 {
+    /// <summary>
+    /// Валидатор проверки возможности приготовления кофе
+    /// </summary>
     public class CoffeeBrewingValidator
     {
         private readonly CoffeeMachine _coffeeMachine;
 
+        /// <summary>
+        /// Создание валидатора для указанной кофемашины
+        /// </summary>
+        /// <param name="coffeeMachine">Кофемашина для проверки условий</param>
         public CoffeeBrewingValidator(CoffeeMachine coffeeMachine)
         {
             _coffeeMachine = coffeeMachine;
         }
 
+        /// <summary>
+        /// Проверка возможности приготовления кофе с заданными параметрами
+        /// </summary>
+        /// <param name="coffeeType">Тип кофе для приготовления</param>
+        /// <param name="sugarLevel">Уровень сахара</param>
+        /// <returns>Результат проверки с детализацией условий</returns>
         public BrewingValidationResult Validate(CoffeeType coffeeType, int sugarLevel)
         {
             var recipe = CoffeeRecipe.GetRecipe(coffeeType);
@@ -36,5 +49,10 @@ namespace CoffeeMachineWPF.Services
       
     }
 
+    /// <summary>
+    /// Результат проверки возможности приготовления кофе
+    /// </summary>
+    /// <param name="IsValid">Признак успешной проверки всех условий</param>
+    /// <param name="Conditions">Словарь проверенных условий с результатами</param>
     public record BrewingValidationResult(bool IsValid, Dictionary<string, bool> Conditions);
 }

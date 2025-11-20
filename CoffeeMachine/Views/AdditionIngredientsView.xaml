@@ -52,33 +52,33 @@
                     <local:GroupHeaderWithHelp Title="Статус кофемашины" HelpText="Кратко: текущий статус машины, уровень отходов и износ."/>
                 </GroupBox.Header>
                 <StackPanel Margin="10">
-                    <Border Background="{Binding StatusColor}" 
-                           CornerRadius="5" 
-                           Padding="10,8"
-                           BorderThickness="0">
-                        <TextBlock Text="{Binding MachineStatus}" 
-                                  Foreground="White"
-                                  FontWeight="Bold"
-                                  FontSize="12"
-                                  HorizontalAlignment="Center"/>
+                    <Border Background="{Binding StatusColor}"
+                            CornerRadius="5"
+                            Padding="10,8"
+                            BorderThickness="0">
+                        <TextBlock Text="{Binding MachineStatus}"
+                                   Foreground="White"
+                                   FontWeight="Bold"
+                                   FontSize="12"
+                                   HorizontalAlignment="Center" />
                     </Border>
 
                     <Grid Margin="0,10,0,0">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Grid.Column="0">
-                            <TextBlock Text="{Binding CurrentWasteLevel, StringFormat='Уровень отходов: {0}%'}" 
-                                      FontSize="11"/>
-                            <TextBlock Text="{Binding WearLevel, StringFormat='Износ: {0:F1}%'}" 
-                                      FontSize="11"/>
+                            <TextBlock Text="{Binding CurrentWasteLevel, StringFormat='Уровень отходов: {0}%'}"
+                                       FontSize="11" />
+                            <TextBlock Text="{Binding WearLevel, StringFormat='Износ: {0:F1}%'}"
+                                       FontSize="11" />
                         </StackPanel>
 
                         <StackPanel Grid.Column="1">
-                            <TextBlock Text="{Binding ComponentsHealth, StringFormat='Здоровье: {0}%'}" 
-                                      FontSize="11"/>
+                            <TextBlock Text="{Binding ComponentsHealth, StringFormat='Здоровье: {0}%'}"
+                                       FontSize="11" />
                         </StackPanel>
                     </Grid>
                 </StackPanel>
@@ -91,24 +91,25 @@
                 </GroupBox.Header>
                 <StackPanel Margin="10">
                     <ComboBox ItemsSource="{Binding AvailableIngredientTypes}"
-                             SelectedItem="{Binding SelectedIngredientType}"
-                             Height="35"
-                             FontSize="14">
+                              SelectedItem="{Binding SelectedIngredientType}"
+                              Height="35"
+                              FontSize="14">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Converter={StaticResource IngredientTypeConverter}}" Margin="5"/>
+                                <TextBlock Text="{Binding Converter={StaticResource IngredientTypeConverter}}"
+                                           Margin="5" />
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-
-                    <!-- Текущее состояние -->
-                    <StackPanel Margin="0,10,0,0" Visibility="{Binding IsValidIngredientType, Converter={StaticResource BoolToVisibility}}">
-                        <TextBlock Text="{Binding CurrentAmount, StringFormat='Текущее количество: {0}'}" 
-                                  FontWeight="Normal"/>
-                        <TextBlock Text="{Binding MaxCapacity, StringFormat='Максимальная емкость: {0}'}" 
-                                  FontWeight="Normal"/>
-                        <TextBlock Text="{Binding AvailableCapacity, StringFormat='Доступно для пополнения: {0}'}" 
-                                  FontWeight="Normal" Foreground="Blue"/>
+                    <StackPanel Margin="0,10,0,0"
+                                Visibility="{Binding IsValidIngredientType, Converter={StaticResource BoolToVisibility}}">
+                        <TextBlock Text="{Binding CurrentAmount, StringFormat='Текущее количество: {0}'}"
+                                   FontWeight="Normal" />
+                        <TextBlock Text="{Binding MaxCapacity, StringFormat='Максимальная емкость: {0}'}"
+                                   FontWeight="Normal" />
+                        <TextBlock Text="{Binding AvailableCapacity, StringFormat='Доступно для пополнения: {0}'}"
+                                   FontWeight="Normal"
+                                   Foreground="Blue" />
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
@@ -119,7 +120,6 @@
                     <local:GroupHeaderWithHelp Title="Настройки пополнения" HelpText="Режимы пополнения: вручную указать количество или заполнить до максимума."/>
                 </GroupBox.Header>
                 <StackPanel Margin="10">
-                    <!-- режим пополнения -->
                     <RadioButton Content="Указать количество" 
                                 IsChecked="{Binding RefillToMax, Converter={StaticResource InverseBooleanConverter}}"
                                 GroupName="RefillMode"

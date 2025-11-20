@@ -1,5 +1,8 @@
 ﻿namespace CoffeeMachineWPF.Models
 {
+    /// <summary>
+    /// Тип технического обслуживания кофемашины
+    /// </summary>
     public enum MaintenanceType
     {
         Cleaning,       // Очистка баков

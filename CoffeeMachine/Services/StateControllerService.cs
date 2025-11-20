@@ -4,24 +4,38 @@ using System.Text;
 
 namespace CoffeeMachineWPF.Services
 {
+    /// <summary>
+    /// Сервис управления состоянием кофемашины
+    /// </summary>
     public class StateControllerService
     {
         private readonly CoffeeMachine _coffeeMachine;
         private MachineStatus _currentStatus;
 
+        /// <summary>
+        /// Создание сервиса управления состоянием для указанной кофемашины
+        /// </summary>
+        /// <param name="coffeeMachine">Кофемашина для управления состоянием</param>
         public StateControllerService(CoffeeMachine coffeeMachine)
         {
             _coffeeMachine = coffeeMachine;
             _currentStatus = new MachineStatus();
         }
 
+        /// <summary>
+        /// Получение текущего состояния кофемашины
+        /// </summary>
+        /// <returns>Текущее состояние кофемашины</returns>
         public MachineStatus GetCurrentStatus()
         {
             return _currentStatus;
         }
 
-
-
+        /// <summary>
+        /// Генерирация отчета анализа состояния кофемашины
+        /// </summary>
+        /// <param name="status">Состояние кофемашины для анализа</param>
+        /// <returns>Отчет анализа состояния</returns>
         public string GenerateStateAnalysisReport(MachineStatus status)
         {
             var report = new StringBuilder();
@@ -56,6 +70,11 @@ namespace CoffeeMachineWPF.Services
             return report.ToString();
         }
 
+        /// <summary>
+        /// Получение отображаемого названия режима работы
+        /// </summary>
+        /// <param name="mode">Режим работы кофемашины</param>
+        /// <returns>Локализованное название режима</returns>
         private string GetModeDisplay(OperationMode mode)
         {
             return mode switch

@@ -6,25 +6,48 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace CoffeeMachineWPF.ViewModels
 {
+    /// <summary>
+    /// Модель представления для логического контроллера состояния кофемашины
+    /// </summary>
     public partial class StateControllerVM : ObservableObject, IOperationViewModel
     {
         private readonly CoffeeMachine _coffeeMachine;
         private readonly StateControllerService _stateController;
 
+        /// <summary>
+        /// Отчет анализа состояния кофемашины
+        /// </summary>
         [ObservableProperty]
         private string _stateAnalysisReport = "Нажмите 'Анализировать' для проверки состояния";
 
+        /// <summary>
+        /// Текущее состояние кофемашины
+        /// </summary>
         [ObservableProperty]
         private MachineStatus _currentStatus = null!;
 
+        /// <summary>
+        /// Отображаемое название текущего режима
+        /// </summary>
         [ObservableProperty]
         private string _currentModeDisplay = "Загрузка...";
 
+        /// <summary>
+        /// Цвет индикации текущего режима
+        /// </summary>
         [ObservableProperty]
         private string _statusColor = "Gray";
 
+        /// <summary>
+        /// Название операции логического контроллера
+        /// </summary>
         public string OperationName => "Логический контроллер";
 
+        /// <summary>
+        /// Создание модели представления для логического контроллера
+        /// </summary>
+        /// <param name="coffeeMachine">Кофемашина для контроля состояния</param>
+        /// <param name="stateController">Сервис управления состоянием</param>
         public StateControllerVM(CoffeeMachine coffeeMachine, StateControllerService stateController)
         {
             _coffeeMachine = coffeeMachine;
@@ -34,6 +57,9 @@ namespace CoffeeMachineWPF.ViewModels
             AnalyzeState();
         }
 
+        /// <summary>
+        /// Команда анализа текущего состояния кофемашины
+        /// </summary>
         [RelayCommand]
         private void AnalyzeState()
         {
@@ -48,12 +74,19 @@ namespace CoffeeMachineWPF.ViewModels
                 StateAnalysisReport = $"Ошибка анализа: {ex.Message}";
             }
         }
+
+        /// <summary>
+        /// Обновление статуса из сервиса управления состоянием
+        /// </summary>
         private void UpdateStatus()
         {
             CurrentStatus = _stateController.GetCurrentStatus();
             UpdateModeDisplay();
         }
 
+        /// <summary>
+        /// Обновление статуса на основе текущего состояния кофемашины
+        /// </summary>
         private void UpdateStatusFromCoffeeMachine()
         {
             var status = new MachineStatus
@@ -79,6 +112,10 @@ namespace CoffeeMachineWPF.ViewModels
             CurrentStatus = status;
         }
 
+        /// <summary>
+        /// Определение текущего режима работы кофемашины
+        /// </summary>
+        /// <returns>Текущий режим работы</returns>
         private OperationMode DetermineOperationMode()
         {
             if (_coffeeMachine.IsBroken)
@@ -96,6 +133,10 @@ namespace CoffeeMachineWPF.ViewModels
             return OperationMode.NormalMode;
         }
 
+        /// <summary>
+        /// Генерация уведомления о состоянии кофемашины
+        /// </summary>
+        /// <returns>Список уведомлений</returns>
         private List<string> GenerateNotifications()
         {
             var notifications = new List<string>();
@@ -135,6 +176,9 @@ namespace CoffeeMachineWPF.ViewModels
             return notifications;
         }
 
+        /// <summary>
+        /// Обновление отображения текущего режима и цвета
+        /// </summary>
         private void UpdateModeDisplay()
         {
             if (CurrentStatus == null)
@@ -163,6 +207,9 @@ namespace CoffeeMachineWPF.ViewModels
             };
         }
 
+        /// <summary>
+        /// Обновление состояния контроллера
+        /// </summary>
         public void RefreshState()
         {
             UpdateStatusFromCoffeeMachine();

@@ -5,40 +5,81 @@ using System.Linq;
 
 namespace CoffeeMachineWPF.ViewModels;
 
+/// <summary>
+/// Модель представления для технического обслуживания кофемашины
+/// </summary>
 public partial class MaintenanceServiceVM : OperationViewModelBase
 {
+    /// <summary>
+    /// Название операции технического обслуживания
+    /// </summary>
     public override string OperationName => "Техническое обслуживание";
 
+    /// <summary>
+    /// Выбранный тип технического обслуживания
+    /// </summary>
     [ObservableProperty]
     private MaintenanceType _selectedMaintenanceType = MaintenanceType.Cleaning;
 
+    /// <summary>
+    /// Слив воды при обслуживании
+    /// </summary>
     [ObservableProperty]
     private bool _drainWater;
 
+    /// <summary>
+    /// Сброс статистики при обслуживании
+    /// </summary>
     [ObservableProperty]
     private bool _resetStatistics;
 
+    /// <summary>
+    /// Выполнение постусловий операции обслуживания
+    /// </summary>
     [ObservableProperty]
     private bool _postConditionMet;
 
-    // Предусловия
+    /// <summary>
+    /// Признак наличия отходов для очистки
+    /// </summary>
     public bool HasWaste => _coffeeMachine.WasteLevel > 0;
+
+    /// <summary>
+    /// Признак активации ключа обслуживания
+    /// </summary>
     public bool IsMaintenanceKeyActivated => true;
+
+    /// <summary>
+    /// Признак наличия расходных материалов для обслуживания
+    /// </summary>
     public bool HasCleaningSupplies => true;
 
+    /// <summary>
+    /// Признак выполнения всех предусловий операции обслуживания
+    /// </summary>
     public bool PreConditionsMet =>
         IsNotMakingCoffee &&
         HasWaste &&
         IsMaintenanceKeyActivated &&
         HasCleaningSupplies;
 
+    /// <summary>
+    /// Доступные типы технического обслуживания
+    /// </summary>
     public IEnumerable<MaintenanceType> AvailableMaintenanceTypes =>
         Enum.GetValues(typeof(MaintenanceType)).Cast<MaintenanceType>();
 
+    /// <summary>
+    /// Создание модели представления для технического обслуживания
+    /// </summary>
+    /// <param name="coffeeMachine">Кофемашина для обслуживания</param>
     public MaintenanceServiceVM(CoffeeMachine coffeeMachine) : base(coffeeMachine)
     {
     }
 
+    /// <summary>
+    /// Команда выполнения технического обслуживания
+    /// </summary>
     [RelayCommand(CanExecute = nameof(CanExecuteMaintenance))]
     private void PerformMaintenance()
     {
@@ -83,6 +124,9 @@ public partial class MaintenanceServiceVM : OperationViewModelBase
         }
     }
 
+    /// <summary>
+    /// Уменьшение износа оборудования в зависимости от типа обслуживания
+    /// </summary>
     private void ReduceMachineWear()
     {
         double reductionAmount = SelectedMaintenanceType switch
@@ -97,21 +141,39 @@ public partial class MaintenanceServiceVM : OperationViewModelBase
         _coffeeMachine.ReduceWear(reductionAmount);
     }
 
+    /// <summary>
+    /// Выполнение ремонта кофемашины при необходимости
+    /// </summary>
     private void RepairMachine()
     {
         if (_coffeeMachine.IsBroken && _coffeeMachine.WearLevel < 100)
         {
-            // машинка сама всё сделает
+            
         }
 
         if (_coffeeMachine.WearLevel <= 70)
         {
-            // тож сама
+           
         }
     }
 
+    /// <summary>
+    /// Проверка возможности выполнения команды обслуживания
+    /// </summary>
+    /// <returns>true, если команда может быть выполнена</returns>
     private bool CanExecuteMaintenance() => PreConditionsMet;
 
+    /// <summary>
+    /// Проверка выполнения постусловий операции обслуживания
+    /// </summary>
+    /// <param name="oldWasteLevel">Уровень отходов до обслуживания</param>
+    /// <param name="oldTemperature">Температура до обслуживания</param>
+    /// <param name="oldMaintenanceCount">Счетчик обслуживаний до операции</param>
+    /// <param name="oldWater">Количество воды до обслуживания</param>
+    /// <param name="oldWearLevel">Уровень износа до обслуживания</param>
+    /// <param name="oldComponentsHealth">Здоровье компонентов до обслуживания</param>
+    /// <param name="oldIsBroken">Состояние поломки до обслуживания</param>
+    /// <returns>true, если постусловия выполнены</returns>
     private bool CheckPostConditions(int oldWasteLevel, double oldTemperature, int oldMaintenanceCount,
                                 int oldWater, double oldWearLevel, int oldComponentsHealth, bool oldIsBroken)
     {
@@ -134,10 +196,27 @@ public partial class MaintenanceServiceVM : OperationViewModelBase
                machineNotBrokenAfterMaintenance;
     }
 
+    /// <summary>
+    /// Обработчик изменения выбранного типа обслуживания
+    /// </summary>
+    /// <param name="value">Новый тип обслуживания</param>
     partial void OnSelectedMaintenanceTypeChanged(MaintenanceType value) => UpdatePreConditions();
+
+    /// <summary>
+    /// Обработчик изменения флага слива воды
+    /// </summary>
+    /// <param name="value">Новое значение флага</param>
     partial void OnDrainWaterChanged(bool value) => UpdatePreConditions();
+
+    /// <summary>
+    /// Обработчик изменения флага сброса статистики
+    /// </summary>
+    /// <param name="value">Новое значение флага</param>
     partial void OnResetStatisticsChanged(bool value) => UpdatePreConditions();
 
+    /// <summary>
+    /// Обновление состояния предусловий операции
+    /// </summary>
     private void UpdatePreConditions()
     {
         OnPropertyChanged(nameof(HasWaste));
@@ -148,6 +227,9 @@ public partial class MaintenanceServiceVM : OperationViewModelBase
         PerformMaintenanceCommand.NotifyCanExecuteChanged();
     }
 
+    /// <summary>
+    /// Обновление всех свойств модели представления
+    /// </summary>
     private void UpdateAllProperties()
     {
         UpdatePreConditions();

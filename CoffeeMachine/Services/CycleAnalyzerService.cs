@@ -3,8 +3,19 @@ using System.Text;
 
 namespace CoffeeMachineWPF.Services
 {
+    /// <summary>
+    /// Сервис анализа циклических процессов кофемашины
+    /// </summary>
     public class CycleAnalyzerService
     {
+        /// <summary>
+        /// Анализ цикла нагрева воды с проверкой инвариантов и вариантов
+        /// </summary>
+        /// <param name="currentTemp">Текущая температура воды</param>
+        /// <param name="targetTemp">Целевая температура нагрева</param>
+        /// <param name="heatingRate">Скорость нагрева за итерацию</param>
+        /// <param name="maxSafeTemp">Максимальная безопасная температура</param>
+        /// <returns>Результат анализа цикла нагрева воды</returns>
         public CycleAnalysisResult AnalyzeWaterHeating(double currentTemp, double targetTemp, double heatingRate, double maxSafeTemp)
         {
             var result = new CycleAnalysisResult();
@@ -78,6 +89,12 @@ namespace CoffeeMachineWPF.Services
             return result;
         }
 
+        /// <summary>
+        /// Анализ цикла очистки баков с проверкой инвариантов и вариантов
+        /// </summary>
+        /// <param name="currentWaste">Текущий уровень отходов</param>
+        /// <param name="cleaningRate">Скорость очистки за итерацию</param>
+        /// <returns>Результат анализа цикла очистки баков</returns>
         public CycleAnalysisResult AnalyzeTankCleaning(double currentWaste, double cleaningRate)
         {
             var result = new CycleAnalysisResult();
@@ -148,6 +165,12 @@ namespace CoffeeMachineWPF.Services
             return result;
         }
 
+        /// <summary>
+        /// Анализ цикла тестирования дозаторов с проверкой инвариантов и вариантов
+        /// </summary>
+        /// <param name="numDispensers">Количество дозаторов для тестирования</param>
+        /// <param name="testDispenser">Функция тестирования дозатора</param>
+        /// <returns>Результат анализа цикла тестирования дозаторов</returns>
         public CycleAnalysisResult AnalyzeDispenserTesting(int numDispensers, Func<int, bool> testDispenser)
         {
             var result = new CycleAnalysisResult();
@@ -218,6 +241,12 @@ namespace CoffeeMachineWPF.Services
             return result;
         }
 
+        /// <summary>
+        /// Генерирация отчета анализа циклического процесса
+        /// </summary>
+        /// <param name="process">Анализируемый циклический процесс</param>
+        /// <param name="result">Результат анализа процесса</param>
+        /// <returns>Отчет анализа</returns>
         public string GenerateCycleAnalysisReport(CycleProcess process, CycleAnalysisResult result)
         {
             var report = new StringBuilder();

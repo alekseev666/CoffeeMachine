@@ -10,9 +10,19 @@ using System.Windows.Media;
 
 namespace CoffeeMachineWPF.Converters
 {
-    // MaintenanceEffectConverter.cs
+    /// <summary>
+    /// Конвертация типа обслуживания в текстовое сообщение о эффектах
+    /// </summary>
     public class MaintenanceEffectConverter : IValueConverter
     {
+        /// <summary>
+        /// Преобразование типа обслуживания в описание его эффектов
+        /// </summary>
+        /// <param name="value">Тип обслуживания для преобразования</param>
+        /// <param name="targetType">Целевой тип (ожидается string)</param>
+        /// <param name="parameter">Дополнительный параметр</param>
+        /// <param name="culture">Культура для преобразования</param>
+        /// <returns>Описание эффектов выбранного типа обслуживания или сообщение по умолчанию</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value switch
@@ -25,6 +35,10 @@ namespace CoffeeMachineWPF.Converters
             };
         }
 
+        /// <summary>
+        /// Обратное преобразование не поддерживается
+        /// </summary>
+        /// <exception cref="NotImplementedException">Всегда выбрасывается исключение</exception>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
             => throw new NotImplementedException();
     }

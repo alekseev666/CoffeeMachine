@@ -36,14 +36,11 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="20">
-            <!-- Заголовок -->
             <TextBlock Text="{Binding OperationName}" 
                       FontSize="20" 
                       FontWeight="Bold"
                       Foreground="#333"
                       Margin="0,0,0,20"/>
-
-            <!-- Блок WP-анализа -->
             <GroupBox Header="WP-анализ алгоритмов (ЛР-2)" FontWeight="SemiBold" Margin="0,0,0,15">
                 <StackPanel Margin="10">
                     <Button Content="Анализировать алгоритм" 
@@ -66,7 +63,6 @@
                     </Border>
                 </StackPanel>
             </GroupBox>
-            <!-- Статус машины -->
             <GroupBox Header="Статус кофемашины" FontWeight="SemiBold" Margin="0,0,0,15">
                 <StackPanel Margin="10">
                     <Border Background="{Binding StatusColor}" 
@@ -102,8 +98,6 @@
                     </Grid>
                 </StackPanel>
             </GroupBox>
-
-            <!-- Выбор кофе -->
             <GroupBox Header="Выбор напитка" FontWeight="SemiBold" Margin="0,0,0,15">
                 <StackPanel Margin="10">
                     <ComboBox ItemsSource="{Binding AvailableCoffeeTypes}"
@@ -117,9 +111,7 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    
-
-                    <!-- Информация о рецепте -->
+                   
                     <StackPanel Margin="0,10,0,0" 
                                Visibility="{Binding SelectedCoffeeType}">
                         <TextBlock Text="{Binding CurrentRecipe.Description}" 
@@ -144,10 +136,8 @@
                 </StackPanel>
             </GroupBox>
 
-            <!-- Настройки напитка -->
             <GroupBox Header="Настройки напитка" FontWeight="SemiBold" Margin="0,0,0,15">
                 <StackPanel Margin="10">
-                    <!-- Уровень сахара -->
                     <TextBlock Text="Уровень сахара:" 
                               FontWeight="Normal"
                               Margin="0,0,0,5"/>
@@ -174,17 +164,9 @@
                             IsEnabled="{Binding IsNotMakingCoffee}"/>
                     </Grid>
 
-                    <!-- Добавить молоко -->
-                    <!-- Добавить молоко -->
-                    <CheckBox Content="Добавить молоко" 
-                         IsChecked="{Binding AddMilk}"
-                         FontWeight="Normal"
-                         Margin="0,15,0,0"
-                         IsEnabled="{Binding CanAddMilk}"/>
+
                 </StackPanel>
             </GroupBox>
-
-            <!-- Время приготовления -->
             <GroupBox Header="⏱️ Время приготовления" FontWeight="SemiBold" Margin="0,0,0,15">
                 <StackPanel Margin="10">
                     <Grid>
@@ -204,8 +186,6 @@
                       Text="{Binding EstimatedBrewTime, StringFormat={}{0:F1} сек}"
                       FontWeight="Bold" Foreground="#2196F3"
                       Margin="10,0,0,0"/>
-
-                        <!-- Прогресс бар приготовления -->
                         <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
                        Margin="0,10,0,0"
                        Visibility="{Binding IsBrewingInProgress, Converter={StaticResource BoolToVisibility}}">
@@ -226,8 +206,6 @@
                                 </ProgressBar.Foreground>
                             </ProgressBar>
                         </StackPanel>
-
-                        <!-- Факторы влияния на время -->
                         <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
                        Margin="0,10,0,0"
                        Background="#F5F5F5">
@@ -237,19 +215,15 @@
                           FontSize="10" Margin="5,1"/>
                             <TextBlock Text="{Binding SugarLevel, StringFormat='• Сахар: {0} порций'}" 
                           FontSize="10" Margin="5,1"/>
-                            <TextBlock Text="{Binding AddMilk, StringFormat='• Молоко: {0}'}" 
-                          FontSize="10" Margin="5,1"/>
                             <TextBlock Text="{Binding WearLevel, StringFormat='• Износ машины: {0:F1}%'}" 
                           FontSize="10" Margin="5,1"/>
                         </StackPanel>
                     </Grid>
                 </StackPanel>
             </GroupBox>
-            <!-- Предусловия -->
             <GroupBox Header="Проверка предусловий" FontWeight="SemiBold" Margin="0,0,0,15">
                 <StackPanel Margin="10">
                     <StackPanel>
-                        <!-- Базовые предусловия из родительского класса -->
                         <StackPanel Orientation="Horizontal" Margin="0,2">
                             <TextBlock Text="• " FontWeight="Bold"/>
                             <TextBlock Text="Машина не сломана: " Style="{StaticResource PreConditionStyle}"/>
@@ -265,8 +239,6 @@
                             <TextBlock Text="Уровень отходов не критический: " Style="{StaticResource PreConditionStyle}"/>
                             <TextBlock Text="{Binding WasteLevelNotCritical}" Style="{StaticResource PreConditionStyle}" FontWeight="Bold"/>
                         </StackPanel>
-
-                        <!-- Специфические предусловия -->
                         <StackPanel Orientation="Horizontal" Margin="0,2">
                             <TextBlock Text="• " FontWeight="Bold"/>
                             <TextBlock Text="Достаточно воды: " Style="{StaticResource PreConditionStyle}"/>
@@ -293,8 +265,6 @@
                             <TextBlock Text="{Binding HasSugar}" Style="{StaticResource PreConditionStyle}" FontWeight="Bold"/>
                         </StackPanel>
                     </StackPanel>
-
-                    <!-- Индикатор предусловий -->
                     <Border Margin="0,10,0,0" 
                            Background="{Binding PreConditionsMet, Converter={StaticResource PreConditionColorConverter}}"
                            Style="{StaticResource IndicatorStyle}">
@@ -304,8 +274,6 @@
                     </Border>
                 </StackPanel>
             </GroupBox>
-
-            <!-- Кнопка выполнения -->
             <Button Content="ПРИГОТОВИТЬ КОФЕ" 
                    Command="{Binding MakeCoffeeCommand}"
                    IsEnabled="{Binding PreConditionsMet}"

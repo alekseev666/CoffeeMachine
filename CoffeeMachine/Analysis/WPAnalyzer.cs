@@ -35,7 +35,7 @@ namespace CoffeeMachineWPF.Analysis
             return result.ToString();
         }
 
-        public string AnalyzeTimeCalculation(CoffeeType coffeeType, int sugarLevel, bool addMilk, double baseTime)
+        public string AnalyzeTimeCalculation(CoffeeType coffeeType, int sugarLevel,  double baseTime)
         {
             var result = new StringBuilder();
             result.AppendLine("АНАЛИЗ РАСЧЕТА ВРЕМЕНИ ПРИГОТОВЛЕНИЯ:");
@@ -73,11 +73,7 @@ namespace CoffeeMachineWPF.Analysis
                 timeFactors.Add($"+{sugarTime:F1} сек (сахар: {sugarLevel} порций)");
             }
 
-            if (addMilk)
-            {
-                totalTime += 3;
-                timeFactors.Add($"+3.0 сек (добавление молока)");
-            }
+
 
             result.AppendLine("• Факторы влияния:");
             foreach (var factor in timeFactors)
@@ -119,7 +115,7 @@ namespace CoffeeMachineWPF.Analysis
             return result.ToString();
         }
 
-        public string AnalyzeCostCalculation(CoffeeType coffeeType, int sugarLevel, bool addMilk, Dictionary<string, double> prices)
+        public string AnalyzeCostCalculation(CoffeeType coffeeType, int sugarLevel,  Dictionary<string, double> prices)
         {
             var result = new StringBuilder();
             result.AppendLine("АНАЛИЗ РАСЧЕТА СТОИМОСТИ:");
@@ -158,12 +154,6 @@ namespace CoffeeMachineWPF.Analysis
                 costComponents.Add($"+{sugarCost:F2} руб (сахар: {sugarLevel} порций)");
             }
 
-            if (addMilk)
-            {
-                totalCost += 15;
-                costComponents.Add($"+15.00 руб (молоко)");
-            }
-
             result.AppendLine("• Компоненты стоимости:");
             foreach (var component in costComponents)
             {
@@ -181,7 +171,7 @@ namespace CoffeeMachineWPF.Analysis
         public string GenerateFullReport(
             Dictionary<string, bool> preConditions,
             Dictionary<string, bool> postConditions,
-            CoffeeType coffeeType, int sugarLevel, bool addMilk,
+            CoffeeType coffeeType, int sugarLevel, 
             Dictionary<string, (int current, int required, bool isMet)> resources,
             Dictionary<string, double> prices)
         {
@@ -193,9 +183,9 @@ namespace CoffeeMachineWPF.Analysis
             report.AppendLine();
             report.AppendLine(AnalyzeOrderPossibility(resources));
             report.AppendLine();
-            report.AppendLine(AnalyzeTimeCalculation(coffeeType, sugarLevel, addMilk, 10.0));
+            report.AppendLine(AnalyzeTimeCalculation(coffeeType, sugarLevel, 10.0));
             report.AppendLine();
-            report.AppendLine(AnalyzeCostCalculation(coffeeType, sugarLevel, addMilk, prices));
+            report.AppendLine(AnalyzeCostCalculation(coffeeType, sugarLevel,  prices));
             report.AppendLine();
             report.AppendLine(AnalyzePostConditions(postConditions));
 

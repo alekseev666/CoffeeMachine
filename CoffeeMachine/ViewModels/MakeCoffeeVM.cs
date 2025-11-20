@@ -45,8 +45,6 @@ public partial class MakeCoffeeVM : OperationViewModelBase
     [ObservableProperty]
     private int _sugarLevel;
 
-    [ObservableProperty]
-    private bool _addMilk;
 
     [ObservableProperty]
     private bool _postConditionMet;
@@ -57,7 +55,8 @@ public partial class MakeCoffeeVM : OperationViewModelBase
 
     public bool HasEnoughWater => _coffeeMachine.Water >= _currentRecipe.RequiredWater;
     public bool HasEnoughCoffee => _coffeeMachine.Coffee >= _currentRecipe.RequiredCoffee;
-    public bool HasEnoughMilk => !AddMilk || _coffeeMachine.Milk >= _currentRecipe.RequiredMilk;
+
+    public bool HasEnoughMilk => _coffeeMachine.Milk >= _currentRecipe.RequiredMilk;
     public bool HasCups => _coffeeMachine.Cups > 0;
     public bool HasSugar => _coffeeMachine.Sugar >= SugarLevel;
 
@@ -70,7 +69,6 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         WasteLevelNotCritical &&
         HasEnoughWater &&
         HasEnoughCoffee &&
-        HasEnoughMilk &&
         HasCups &&
         HasSugar;
 
@@ -103,13 +101,6 @@ public partial class MakeCoffeeVM : OperationViewModelBase
     partial void OnSelectedCoffeeTypeChanged(CoffeeType value)
     {
         ResetCoffeeReadyState();
-
-        // Автоматически сбрасываем молоко для запрещенных типов
-        if (!CanAddMilk)
-        {
-            AddMilk = false;
-        }
-
         UpdateAll();
     }
     private void UpdateAll()
@@ -121,7 +112,7 @@ public partial class MakeCoffeeVM : OperationViewModelBase
     }
     private void OnPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is nameof(SelectedCoffeeType) or nameof(SugarLevel) or nameof(AddMilk))
+        if (e.PropertyName is nameof(SelectedCoffeeType) or nameof(SugarLevel))
         {
             UpdateEstimatedTime();
             UpdateCurrentRecipe();
@@ -135,16 +126,15 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         OnPropertyChanged(nameof(CurrentRecipe));
         OnPropertyChanged(nameof(HasEnoughWater));
         OnPropertyChanged(nameof(HasEnoughCoffee));
-        OnPropertyChanged(nameof(HasEnoughMilk));
     }
 
 
-    private void UpdateEstimatedTime() => EstimatedBrewTime = _coffeeMachine.CalculateBrewTime(SelectedCoffeeType, SugarLevel, AddMilk);
+    private void UpdateEstimatedTime() => EstimatedBrewTime = _coffeeMachine.CalculateBrewTime(SelectedCoffeeType, SugarLevel);
 
     [RelayCommand]
     private void AnalyzeAlgorithm()
     {
-        var validation = _validator.Validate(SelectedCoffeeType, SugarLevel, AddMilk);
+        var validation = _validator.Validate(SelectedCoffeeType, SugarLevel);
         var resources = GetResourcesInfo();
         var prices = GetPricesInfo();
         var postConditions = GetPostConditionsInfo();
@@ -154,7 +144,6 @@ public partial class MakeCoffeeVM : OperationViewModelBase
             postConditions,
             SelectedCoffeeType,
             SugarLevel,
-            AddMilk,
             resources,
             prices
         );
@@ -178,7 +167,7 @@ public partial class MakeCoffeeVM : OperationViewModelBase
             UpdateAllProperties();
 
 
-            await _brewingService.BrewCoffeeAsync(SelectedCoffeeType, SugarLevel, AddMilk);
+            await _brewingService.BrewCoffeeAsync(SelectedCoffeeType, SugarLevel);
 
             ConsumeResources();
             UpdateMachineAfterBrewing();
@@ -200,10 +189,7 @@ public partial class MakeCoffeeVM : OperationViewModelBase
     {
         _coffeeMachine.Water -= _currentRecipe.RequiredWater;
         _coffeeMachine.Coffee -= _currentRecipe.RequiredCoffee;
-
-        if (AddMilk)
-            _coffeeMachine.Milk -= _currentRecipe.RequiredMilk;
-
+        _coffeeMachine.Milk -= _currentRecipe.RequiredMilk;
         _coffeeMachine.Sugar -= SugarLevel;
         _coffeeMachine.Cups--;
     }
@@ -239,20 +225,14 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         if (SugarLevel > 0)
             wearAmount += SUGAR_WEAR_MULTIPLIER * SugarLevel;
 
-        if (AddMilk)
-            wearAmount += MILK_WEAR_AMOUNT;
 
         return wearAmount;
     }
 
     private bool CanMakeCoffee()
     {
-        var validation = _validator.Validate(SelectedCoffeeType, SugarLevel, AddMilk);
+        var validation = _validator.Validate(SelectedCoffeeType, SugarLevel);
 
-        if ((SelectedCoffeeType == CoffeeType.Espresso || SelectedCoffeeType == CoffeeType.Americano) && AddMilk)
-        {
-            return false;
-        }
 
         return validation.IsValid;
     }
@@ -264,7 +244,7 @@ public partial class MakeCoffeeVM : OperationViewModelBase
                _coffeeMachine.Cups == oldState.Cups - 1 &&
                _coffeeMachine.DrinksMade == oldState.DrinksMade + 1 &&
                _coffeeMachine.WasteLevel > oldState.WasteLevel &&
-               (!AddMilk || _coffeeMachine.Milk == oldState.Milk - _currentRecipe.RequiredMilk);
+               (_coffeeMachine.Milk == oldState.Milk - _currentRecipe.RequiredMilk);
     }
 
     private void OnBrewCompleted()
@@ -291,7 +271,6 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         {
             ["Вода"] = (_coffeeMachine.Water, _currentRecipe.RequiredWater, HasEnoughWater),
             ["Кофе"] = (_coffeeMachine.Coffee, _currentRecipe.RequiredCoffee, HasEnoughCoffee),
-            ["Молоко"] = (_coffeeMachine.Milk, _currentRecipe.RequiredMilk, HasEnoughMilk),
             ["Стаканчики"] = (_coffeeMachine.Cups, 1, HasCups),
             ["Сахар"] = (_coffeeMachine.Sugar, SugarLevel, HasSugar)
         };
@@ -312,12 +291,6 @@ public partial class MakeCoffeeVM : OperationViewModelBase
         ResetCoffeeReadyState();
         UpdateEstimatedTime();
         NotifyPreConditionsChanged();
-    }
-
-    partial void OnAddMilkChanged(bool value)
-    {
-        ResetCoffeeReadyState();
-        UpdateAll();
     }
 
     private void ResetCoffeeReadyState()

@@ -113,8 +113,17 @@
                                 GroupName="RefillMode"
                                 Margin="0,5"/>
 
-                    <StackPanel Margin="20,5,0,10" 
-                               Visibility="{Binding RefillToMax, Converter={StaticResource InverseBooleanConverter}}">
+                    <StackPanel Margin="20,5,0,10">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RefillToMax}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
                         <TextBlock Text="Количество для пополнения:" 
                                   FontWeight="Normal"
                                   Margin="0,0,0,5"/>

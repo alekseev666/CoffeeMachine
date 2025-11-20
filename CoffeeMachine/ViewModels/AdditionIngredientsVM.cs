@@ -9,7 +9,7 @@ namespace CoffeeMachineWPF.ViewModels
         public override string OperationName => "Пополнение ингредиентов";
 
         [ObservableProperty]
-        private IngredientType _selectedIngredientType;
+        private IngredientType _selectedIngredientType = IngredientType.Water;
 
         [ObservableProperty]
         private int _refillAmount = 100;
@@ -20,7 +20,7 @@ namespace CoffeeMachineWPF.ViewModels
         [ObservableProperty]
         private bool _postConditionMet;
 
-        public bool IsValidIngredientType => SelectedIngredientType != null;
+        public bool IsValidIngredientType => Enum.IsDefined(typeof(IngredientType), SelectedIngredientType);
         public bool IsValidAmount => RefillAmount > 0;
         public bool IsWithinMaxCapacity => RefillAmount <= AvailableCapacity;
         public bool HasAvailableCapacity => AvailableCapacity > 0;

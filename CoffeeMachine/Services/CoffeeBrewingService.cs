@@ -19,9 +19,9 @@ namespace CoffeeMachineWPF.Services
             _brewTimer.Tick += OnBrewTimerTick;
         }
 
-        public async Task BrewCoffeeAsync(CoffeeType coffeeType, int sugarLevel, bool addMilk)
+        public async Task BrewCoffeeAsync(CoffeeType coffeeType, int sugarLevel)
         {
-            double brewTime = _coffeeMachine.CalculateBrewTime(coffeeType, sugarLevel, addMilk);
+            double brewTime = _coffeeMachine.CalculateBrewTime(coffeeType, sugarLevel);
             _coffeeMachine.StartBrewing(brewTime);
             _brewTimer.Start();
 

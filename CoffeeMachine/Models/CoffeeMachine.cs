@@ -36,7 +36,7 @@
             ComponentsHealth = Math.Max(0, 100 - (int)WearLevel);
         }
 
-        public double CalculateBrewTime(CoffeeType coffeeType, int sugarLevel, bool addMilk)
+        public double CalculateBrewTime(CoffeeType coffeeType, int sugarLevel)
         {
             double baseTime = 10.0;
 
@@ -59,11 +59,6 @@
             if (sugarLevel > 0)
             {
                 baseTime += sugarLevel * 0.5;
-            }
-
-            if (addMilk)
-            {
-                baseTime += 3;
             }
 
             if (WearLevel > 50)

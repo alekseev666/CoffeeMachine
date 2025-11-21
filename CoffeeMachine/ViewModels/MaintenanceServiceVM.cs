@@ -200,7 +200,15 @@ public partial class MaintenanceServiceVM : OperationViewModelBase
     /// Обработчик изменения выбранного типа обслуживания
     /// </summary>
     /// <param name="value">Новый тип обслуживания</param>
-    partial void OnSelectedMaintenanceTypeChanged(MaintenanceType value) => UpdatePreConditions();
+    partial void OnSelectedMaintenanceTypeChanged(MaintenanceType value)
+    {
+        // Сбрасываем галочку "Слить воду" если выбран не DeepCleaning
+        if (value != MaintenanceType.DeepCleaning)
+        {
+            DrainWater = false;
+        }
+        UpdatePreConditions();
+    }
 
     /// <summary>
     /// Обработчик изменения флага слива воды

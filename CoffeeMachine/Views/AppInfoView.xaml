@@ -48,7 +48,7 @@
                               Foreground="#2C3E50"
                               Margin="0,0,0,10"/>
 
-  
+
 
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -68,7 +68,6 @@
                     </Grid>
                 </StackPanel>
             </Border>
-
             <Border Style="{StaticResource InfoCardStyle}">
                 <StackPanel>
                     <TextBlock Text="Термины" 
@@ -76,9 +75,6 @@
                               FontWeight="Bold"
                               Foreground="#2C3E50"
                               Margin="0,0,0,15"/>
-
-              
-                    <!-- Основные термины -->
                     <StackPanel>
                         <TextBlock Text="Предусловие (Precondition)" Style="{StaticResource TermStyle}"/>
                         <TextBlock Text="Условие, которое должно выполняться перед выполнением операции. Обозначает требования к состоянию системы до начала выполнения. В контексте кофемашины: наличие ингредиентов, исправность оборудования, допустимый уровень отходов."
@@ -102,8 +98,6 @@
                     </StackPanel>
                 </StackPanel>
             </Border>
-
-            <!-- Описание вкладок приложения -->
             <Border Style="{StaticResource InfoCardStyle}">
                 <StackPanel>
                     <TextBlock Text="Описание вкладок приложения" 
@@ -111,8 +105,6 @@
                               FontWeight="Bold"
                               Foreground="#2C3E50"
                               Margin="0,0,0,15"/>
-
-                    <!-- Приготовление кофе -->
                     <TextBlock Text="Приготовление напитков" 
                               FontSize="16" 
                               FontWeight="SemiBold"
@@ -125,8 +117,6 @@
                         <TextBlock Text="• WP-анализ: вычисление слабейшего предусловия для гарантии успешного приготовления" Margin="10,0,0,5"/>
                         <TextBlock Text="• Верификация постусловий: корректное расходование ресурсов, обновление статистики" Margin="10,0,0,5"/>
                     </StackPanel>
-
-                    <!-- Пополнение ингредиентов -->
                     <TextBlock Text="Пополнение ингредиентов" 
                               FontSize="16" 
                               FontWeight="SemiBold"
@@ -139,8 +129,6 @@
                         <TextBlock Text="• Постусловия: точное увеличение количества ингредиентов, сохранение инвариантов емкости" Margin="10,0,0,5"/>
                         <TextBlock Text="• Инварианты: максимальная емкость контейнеров, целостность системы" Margin="10,0,0,5"/>
                     </StackPanel>
-
-                    <!-- Техническое обслуживание -->
                     <TextBlock Text="Техническое обслуживание" 
                               FontSize="16" 
                               FontWeight="SemiBold"
@@ -153,8 +141,6 @@
                         <TextBlock Text="• Постусловия: сброс отходов, уменьшение износа, восстановление работоспособности" Margin="10,0,0,5"/>
                         <TextBlock Text="• Инварианты: сохранение функциональности, невозможность ухудшения состояния" Margin="10,0,0,5"/>
                     </StackPanel>
-
-                    <!-- Анализ циклов -->
                     <TextBlock Text="Анализ циклов" 
                               FontSize="16" 
                               FontWeight="SemiBold"
@@ -167,8 +153,6 @@
                         <TextBlock Text="• Варианты циклов: гарантии завершения циклических процессов" Margin="10,0,0,5"/>
                         <TextBlock Text="• Верификационные условия: доказательство частичной и тотальной корректности" Margin="10,0,0,5"/>
                     </StackPanel>
-
-                    <!-- Логический контроллер -->
                     <TextBlock Text="Логический контроллер" 
                               FontSize="16" 
                               FontWeight="SemiBold"
@@ -186,11 +170,7 @@
 
             <Border Style="{StaticResource InfoCardStyle}">
                 <StackPanel>
-                    
-
-                
                     <StackPanel>
-                        <!-- ЛР1 -->
                         <TextBlock Text="Лабораторная работа 1: «Контракты в интерфейсе»" 
                       FontSize="16" 
                       FontWeight="SemiBold"
@@ -203,8 +183,6 @@
                             <TextBlock Text="• Индикаторы выполнения Pre/Post условий в реальном времени" Margin="0,0,0,2"/>
                             <TextBlock Text="• Формализация контрактов для каждой операции" Margin="0,0,0,5"/>
                         </StackPanel>
-
-                        <!-- ЛР2 -->
                         <TextBlock Text="Лабораторная работа 2: «Движок слабейшего предусловия (WP)»" 
                       FontSize="16" 
                       FontWeight="SemiBold"
@@ -217,8 +195,6 @@
                             <TextBlock Text="• Автоматическая генерация триад Хоара {Pre} P {Post}" Margin="0,0,0,2"/>
                             <TextBlock Text="• Пошаговый трейс преобразования условий" Margin="0,0,0,5"/>
                         </StackPanel>
-
-                        <!-- ЛР3 -->
                         <TextBlock Text="Лабораторная работа 3: «Циклы под микроскопом»" 
                       FontSize="16" 
                       FontWeight="SemiBold"
@@ -231,8 +207,6 @@
                             <TextBlock Text="• Инварианты для нагрева воды, очистки баков, тестирования дозаторов" Margin="0,0,0,2"/>
                             <TextBlock Text="• Вариант-функции для гарантии завершения циклов" Margin="0,0,0,5"/>
                         </StackPanel>
-
-                        <!-- ЛР4 -->
                         <TextBlock Text="Лабораторная работа 4: «Логические функции»" 
                       FontSize="16" 
                       FontWeight="SemiBold"
@@ -291,21 +265,18 @@
                     </StackPanel>
                 </StackPanel>
             </Border>
-
-            <!-- Контакты и поддержка -->
             <Border Style="{StaticResource InfoCardStyle}">
                 <StackPanel>
                     <TextBlock Text="Выполнили:" 
                               FontSize="18" 
                               FontWeight="Bold"
                               Foreground="#2C3E50"
-                              Margin="0,0,0,15"/>
-
+                              Margin="0,0,0,10"/>
                     <StackPanel>
                         <TextBlock Text="Алексеев Кирилл" Margin="10,0,0,0"/>
+                        <TextBlock Text="Маркина Виктория" Margin="10,0,0,0"/>
                         <TextBlock Text="Суворов Иван" Margin="10,0,0,0"/>
                         <TextBlock Text="Цветкова Вероника" Margin="10,0,0,0"/>
-                        <TextBlock Text="Маркина Виктория" Margin="10,0,0,0"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

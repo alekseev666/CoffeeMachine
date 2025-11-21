@@ -15,14 +15,11 @@
     
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="20">
-
-            <!-- ЗАГОЛОВОК -->
             <TextBlock Text="Анализ циклических процессов кофейной машины"
                       FontSize="20" 
                       FontWeight="Bold"
                       Foreground="#2C3E50"/>
 
-            <!-- ВЫБОР ПРОЦЕССА -->
             <GroupBox BorderBrush="#BDC3C7" 
                      BorderThickness="1"
                      Padding="15">
@@ -40,12 +37,8 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                
 
-                <!-- ПАНЕЛЬ ПАРАМЕТРОВ ДЛЯ КАЖДОГО ПРОЦЕССА -->
                     <StackPanel>
-
-                        <!-- ПАРАМЕТРЫ НАГРЕВА ВОДЫ -->
                         <StackPanel x:Name="WaterHeatingParams" 
                                    Visibility="{Binding SelectedProcess, 
                                                 Converter={StaticResource CycleProcessToVisibilityConverter}, 
@@ -97,8 +90,6 @@
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
-
-                        <!-- ПАРАМЕТРЫ ОЧИСТКИ БАКОВ -->
                         <StackPanel x:Name="TankCleaningParams" 
                                    Visibility="{Binding SelectedProcess, 
                                                 Converter={StaticResource CycleProcessToVisibilityConverter}, 
@@ -128,8 +119,6 @@
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
-
-                        <!-- ПАРАМЕТРЫ ТЕСТИРОВАНИЯ ДОЗАТОРОВ -->
                         <StackPanel x:Name="DispenserTestingParams" 
                                   Visibility="{Binding SelectedProcess, 
                                                 Converter={StaticResource CycleProcessToVisibilityConverter}, 
@@ -147,8 +136,6 @@
                         </StackPanel>
 
                     </StackPanel>
-
-                    <!-- КНОПКА АНАЛИЗА -->
                     <Button Content="🔍 Проанализировать цикл" 
                            Command="{Binding AnalyzeCycleCommand}"
                            Background="#3498DB"
@@ -172,8 +159,6 @@
                     </Button>
                 </StackPanel>
             </GroupBox>
-
-            <!-- ОБЛАСТЬ РЕЗУЛЬТАТОВ -->
             <GroupBox BorderBrush="#BDC3C7" 
                      BorderThickness="1"
                      Padding="15">

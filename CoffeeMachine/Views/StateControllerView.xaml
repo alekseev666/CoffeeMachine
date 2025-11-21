@@ -9,7 +9,6 @@
              d:DesignHeight="600" d:DesignWidth="800">
 
     <UserControl.Resources>
-        <!-- Локальные конвертеры -->
         <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
         <converters:InvertedBoolToColorConverter x:Key="InvertedBoolToColorConverter"/>
         <converters:NotificationVisibilityConverter x:Key="NotificationVisibilityConverter"/>
@@ -20,15 +19,11 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,0,0,0">
         <StackPanel Margin="20">
-
-            <!-- ЗАГОЛОВОК -->
             <TextBlock Text="Логический контроллер состояний кофейной машины"
                       FontSize="20" 
                       FontWeight="Bold"
                       Foreground="#2C3E50"
                       Margin="0,0,0,15"/>
-
-            <!-- ТЕКУЩИЙ РЕЖИМ -->
             <GroupBox Padding="15"
                      Margin="0,0,0,15">
                 <GroupBox.Header>
@@ -61,8 +56,6 @@
                     </Button>
                 </StackPanel>
             </GroupBox>
-
-            <!-- ЛОГИЧЕСКИЕ ПЕРЕМЕННЫЕ -->
             <GroupBox Padding="15"
          Margin="0,0,0,15">
                 <GroupBox.Header>
@@ -79,8 +72,6 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-
-                        <!-- Столбец 1 -->
                         <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
                             <CheckBox IsChecked="{Binding CurrentStatus.HasWater}" IsEnabled="False" Margin="0,0,10,0" VerticalAlignment="Center"/>
                             <TextBlock Text="HasWater (есть вода)" VerticalAlignment="Center"/>
@@ -95,8 +86,6 @@
                             <CheckBox IsChecked="{Binding CurrentStatus.HasCups}" IsEnabled="False" Margin="0,0,10,0" VerticalAlignment="Center"/>
                             <TextBlock Text="HasCups (есть стаканчики)" VerticalAlignment="Center"/>
                         </StackPanel>
-
-                        <!-- Столбец 2 -->
                         <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
                             <CheckBox IsChecked="{Binding CurrentStatus.HasMilk}" IsEnabled="False" Margin="0,0,10,0" VerticalAlignment="Center"/>
                             <TextBlock Text="HasMilk (есть молоко)" VerticalAlignment="Center"/>
@@ -112,8 +101,6 @@
                             <TextBlock Text="IsClean (чистая)" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Grid>
-
-                    <!-- Формула CanOperate -->
                     <Border Background="#F8F9FA" BorderBrush="#DEE2E6" BorderThickness="1" 
                Margin="0,15,0,0" Padding="10">
                         <StackPanel>
@@ -129,16 +116,12 @@
                     </Border>
                 </StackPanel>
             </GroupBox>
-
-            <!-- УВЕДОМЛЕНИЯ -->
             <GroupBox Padding="15"
                      Margin="0,0,0,15">
                 <GroupBox.Header>
                     <local:GroupHeaderWithHelp Title="Уведомления системы" HelpText="Критические, предупреждения и информационные сообщения о состоянии машины. Просматривайте для быстрого обнаружения проблем."/>
                 </GroupBox.Header>
                 <StackPanel>
-
-                    <!-- Критические уведомления -->
                     <Border Background="#FFEBEE" BorderBrush="#F44336" BorderThickness="1" Padding="10" Margin="0,0,0,10">
                         <StackPanel>
                             <TextBlock Text="КРИТИЧЕСКИЕ" FontWeight="Bold" Foreground="#C62828" Margin="0,0,0,5"/>
@@ -157,8 +140,6 @@
                                       Visibility="{Binding CurrentStatus.Notifications, Converter={StaticResource HasCriticalNotificationsConverter}}"/>
                         </StackPanel>
                     </Border>
-
-                    <!-- Предупреждения -->
                     <Border Background="#FFF3E0" BorderBrush="#FF9800" BorderThickness="1" Padding="10" Margin="0,0,0,10">
                         <StackPanel>
                             <TextBlock Text="ПРЕДУПРЕЖДЕНИЯ" FontWeight="Bold" Foreground="#EF6C00" Margin="0,0,0,5"/>
@@ -177,8 +158,6 @@
                                       Visibility="{Binding CurrentStatus.Notifications, Converter={StaticResource HasWarningNotificationsConverter}}"/>
                         </StackPanel>
                     </Border>
-
-                    <!-- Информационные уведомления -->
                     <Border Background="#E3F2FD" BorderBrush="#2196F3" BorderThickness="1" Padding="10">
                         <StackPanel>
                             <TextBlock Text="ИНФОРМАЦИОННЫЕ" FontWeight="Bold" Foreground="#1565C0" Margin="0,0,0,5"/>
@@ -200,8 +179,6 @@
 
                 </StackPanel>
             </GroupBox>
-
-            <!-- КНОПКИ УПРАВЛЕНИЯ -->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
                 <Button Content="🔍 Анализировать состояние" 
                        Command="{Binding AnalyzeStateCommand}"
@@ -224,10 +201,8 @@
                     </Button.Style>
                 </Button>
 
-                
-            </StackPanel>
 
-            <!-- ОБЛАСТЬ РЕЗУЛЬТАТОВ АНАЛИЗА -->
+            </StackPanel>
             <GroupBox Padding="15">
                 <GroupBox.Header>
                     <local:GroupHeaderWithHelp Title="Полный анализ состояния" HelpText="Развёрнутый отчёт логического анализатора состояния машины, включает детали и рекомендации."/>

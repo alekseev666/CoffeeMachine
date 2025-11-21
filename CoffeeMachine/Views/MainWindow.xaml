@@ -45,8 +45,6 @@
             <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
-        <!-- ЛЕВАЯ ПАНЕЛЬ - СПИСОК ОПЕРАЦИЙ -->
         <Border Grid.Column="0" Background="#f8f9fa" BorderBrush="#dee2e6" BorderThickness="0,0,1,0">
             <StackPanel>
                 <TextBlock Text="ОПЕРАЦИИ" 
@@ -76,8 +74,6 @@
                 </ListBox>
             </StackPanel>
         </Border>
-
-        <!-- Выбранная операция -->
         <ContentControl Grid.Column="1" 
                        Content="{Binding SelectedOperation}"
                        Margin="20"/>

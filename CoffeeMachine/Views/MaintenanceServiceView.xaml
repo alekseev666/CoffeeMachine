@@ -39,14 +39,11 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Margin="20">
-            <!-- Заголовок -->
             <TextBlock Text="{Binding OperationName}" 
                       FontSize="20" 
                       FontWeight="Bold"
                       Foreground="#333"
                       Margin="0,0,0,20"/>
-
-            <!-- Статус машины -->
             <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
                 <GroupBox.Header>
                     <local:GroupHeaderWithHelp Title="Статус кофемашины" HelpText="Текущий статус машины: уровень износа, здоровье компонентов и индикатор исправности."/>
@@ -64,8 +61,6 @@
                     </Border>
                 </StackPanel>
             </GroupBox>
-
-            <!-- Состояние износа -->
             <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
                 <GroupBox.Header>
                     <local:GroupHeaderWithHelp Title="Состояние износа" HelpText="Показывает текущий уровень износа и влияние выбранного типа обслуживания на износ."/>
@@ -107,8 +102,6 @@
                                   Foreground="{Binding IsBroken, Converter={StaticResource BoolToColorConverter}}"
                                   Margin="10,0,0,0"/>
                     </Grid>
-
-                    <!-- Информация о влиянии обслуживания -->
                     <Border Background="#E3F2FD" BorderBrush="#90CAF9" BorderThickness="1" 
                             CornerRadius="5" Padding="10" Margin="0,10,0,0">
                         <TextBlock Text="{Binding SelectedMaintenanceType, Converter={StaticResource MaintenanceEffectConverter}}"
@@ -118,8 +111,6 @@
                     </Border>
                 </StackPanel>
             </GroupBox>
-
-            <!-- Текущее состояние машины -->
             <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
                 <GroupBox.Header>
                     <local:GroupHeaderWithHelp Title="Текущее состояние машины" HelpText="Уровень отходов и счётчик выполненных обслуживаний; полезно для оценки необходимости обслуживания."/>
@@ -134,8 +125,6 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-
-                        <!-- Уровень отходов -->
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Уровень отходов:"/>
                         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="10,0,0,0">
                             <ProgressBar Value="{Binding CurrentWasteLevel, Mode=OneWay}" 
@@ -147,8 +136,6 @@
                                       FontWeight="Bold"
                                       VerticalAlignment="Center"/>
                         </StackPanel>
-
-                        <!-- Счетчик обслуживаний -->
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Счетчик обслуживаний:"/>
                         <TextBlock Grid.Row="1" Grid.Column="1" 
                                   Text="{Binding MaintenanceCount, Mode=OneWay}"
@@ -157,8 +144,6 @@
                     </Grid>
                 </StackPanel>
             </GroupBox>
-
-            <!-- Выбор типа обслуживания -->
             <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
                 <GroupBox.Header>
                     <local:GroupHeaderWithHelp Title="Тип обслуживания" HelpText="Выберите тип обслуживания: очистка, глубокая очистка, калибровка и т.д. Описание и влияние отображаются ниже."/>
@@ -174,8 +159,6 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-
-                    <!-- Описание выбранного типа -->
                     <TextBlock Text="{Binding SelectedMaintenanceType, Converter={StaticResource MaintenanceTypeDescriptionConverter}}"
                               FontStyle="Italic"
                               Foreground="#666"
@@ -183,8 +166,6 @@
                               TextWrapping="Wrap"/>
                 </StackPanel>
             </GroupBox>
-
-            <!-- Дополнительные опции -->
             <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
                 <GroupBox.Header>
                     <local:GroupHeaderWithHelp Title="Дополнительные опции" HelpText="Опции, применяемые при обслуживании (например, слив воды или сброс статистики)."/>
@@ -202,22 +183,17 @@
                              Margin="0,5"/>
                 </StackPanel>
             </GroupBox>
-
-            <!-- Предусловия -->
             <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
                 <GroupBox.Header>
                     <local:GroupHeaderWithHelp Title="Проверка предусловий" HelpText="Условия, необходимые для выполнения обслуживания: машина не в процессе приготовления, наличие расходных материалов и т.д."/>
                 </GroupBox.Header>
                 <StackPanel Margin="10">
                     <StackPanel>
-                        <!-- Единственное обязательное условие -->
                         <StackPanel Orientation="Horizontal" Margin="0,2">
                             <TextBlock Text="• " FontWeight="Bold"/>
                             <TextBlock Text="Машина не готовит напиток: " Style="{StaticResource PreConditionStyle}"/>
                             <TextBlock Text="{Binding IsNotMakingCoffee}" Style="{StaticResource PreConditionStyle}" FontWeight="Bold"/>
                         </StackPanel>
-                        
-                        <!-- Информационные условия (не блокирующие) -->
                         <StackPanel Orientation="Horizontal" Margin="0,2">
                             <TextBlock Text="• " FontWeight="Bold"/>
                             <TextBlock Text="Есть отходы для очистки: " Style="{StaticResource PreConditionStyle}"/>
@@ -233,8 +209,6 @@
                             <TextBlock Text="Есть моющие средства: " Style="{StaticResource PreConditionStyle}"/>
                             <TextBlock Text="{Binding HasCleaningSupplies}" Style="{StaticResource PreConditionStyle}" FontWeight="Bold"/>
                         </StackPanel>
-                        
-                        <!-- Информация о состоянии машины -->
                         <StackPanel Orientation="Horizontal" Margin="0,8,0,2" Background="#FFF3E0">
                             <TextBlock Text="Обслуживание доступно даже при:" 
                                       FontStyle="Italic"
@@ -259,8 +233,6 @@
                                       Foreground="#666"/>
                         </StackPanel>
                     </StackPanel>
-
-                    <!-- Общий индикатор Pre -->
                     <Border Margin="0,10,0,0" 
                            Background="{Binding PreConditionsMet, Converter={StaticResource PreConditionColorConverter}}"
                            Style="{StaticResource IndicatorStyle}">
@@ -270,8 +242,6 @@
                     </Border>
                 </StackPanel>
             </GroupBox>
-
-            <!-- Кнопка выполнения -->
             <Button Content="ВЫПОЛНИТЬ ОБСЛУЖИВАНИЕ" 
                    Command="{Binding PerformMaintenanceCommand}"
                    IsEnabled="{Binding PreConditionsMet}"
@@ -298,8 +268,6 @@
                     </Style>
                 </Button.Style>
             </Button>
-
-            <!-- Постусловие -->
             <GroupBox FontWeight="SemiBold">
                 <GroupBox.Header>
                     <local:GroupHeaderWithHelp Title="Результат выполнения" HelpText="Показывает, успешно ли выполнено обслуживание и какие параметры были изменены."/>

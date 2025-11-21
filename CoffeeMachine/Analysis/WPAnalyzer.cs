@@ -232,7 +232,116 @@ namespace CoffeeMachineWPF.Analysis
             report.AppendLine();
             report.AppendLine(AnalyzePostConditions(postConditions));
 
+            // Формула слабейшего условия (WP) и общий вердикт
+            var formula = GetOverallWpFormula(preConditions, postConditions, coffeeType, sugarLevel, resources, prices);
+            report.AppendLine($"\nWP-ФОРМУЛА: {formula}");
+
+            bool overall = GetOverallWpVerdict(preConditions, postConditions, coffeeType, sugarLevel, resources, prices);
+            report.AppendLine($"\nОБЩИЙ ВЕРДИКТ WP: {(overall ? "ВЫПОЛНЕН" : "НАРУШЕН")}");
+
             return report.ToString();
+        }
+
+        /// <summary>
+        /// Возвращает текстовое представление формулы WP (слабейшего условия) для переданных данных.
+        /// Формула строится как конъюнкция ключевых частей: предусловия ∧ ресурсы ∧ инвариант времени ∧ инвариант стоимости ∧ постусловия.
+        /// </summary>
+        public string GetOverallWpFormula(
+            Dictionary<string, bool> preConditions,
+            Dictionary<string, bool> postConditions,
+            CoffeeType coffeeType, int sugarLevel,
+            Dictionary<string, (int current, int required, bool isMet)> resources,
+            Dictionary<string, double> prices)
+        {
+            string prePart = "TRUE";
+            if (preConditions != null && preConditions.Count > 0)
+                prePart = string.Join(" ∧ ", preConditions.Keys.Select(k => $"({k})"));
+
+            string resourcesPart = "TRUE";
+            if (resources != null && resources.Count > 0)
+                resourcesPart = string.Join(" ∧ ", resources.Keys.Select(k => $"({k}_available)") );
+
+            // Время приготовления — то же, что и в анализе времени
+            string timePart = "(0 < totalTime < 60)";
+
+            // Стоимость — то же, что и в анализе стоимости
+            string costPart = "(0 < totalCost < 500)";
+
+            string postPart = "TRUE";
+            if (postConditions != null && postConditions.Count > 0)
+                postPart = string.Join(" ∧ ", postConditions.Keys.Select(k => $"({k})"));
+
+            return $"{prePart} ∧ {resourcesPart} ∧ {timePart} ∧ {costPart} ∧ {postPart}";
+        }
+
+        /// <summary>
+        /// Оценивает единый итоговый WP-вердикт по входным данным.
+        /// Возвращает true если все ключевые инварианты и предусловия/постусловия выполнены.
+        /// </summary>
+        public bool GetOverallWpVerdict(
+            Dictionary<string, bool> preConditions,
+            Dictionary<string, bool> postConditions,
+            CoffeeType coffeeType, int sugarLevel,
+            Dictionary<string, (int current, int required, bool isMet)> resources,
+            Dictionary<string, double> prices)
+        {
+            // 1) Предусловия — все должны быть true
+            bool preOk = preConditions == null || preConditions.All(p => p.Value);
+
+            // 2) Ресурсы — все позиции должны быть помечены как isMet
+            bool resourcesOk = resources == null || resources.All(r => r.Value.isMet);
+
+            // 3) Время приготовления — использовать ту же логику, что и в AnalyzeTimeCalculation
+            double totalTime = 10.0;
+            switch (coffeeType)
+            {
+                case CoffeeType.Espresso:
+                    totalTime += 5;
+                    break;
+                case CoffeeType.Americano:
+                    totalTime += 10;
+                    break;
+                case CoffeeType.Cappuccino:
+                    totalTime += 15;
+                    break;
+                case CoffeeType.Latte:
+                    totalTime += 18;
+                    break;
+            }
+            if (sugarLevel > 0)
+            {
+                totalTime += sugarLevel * 0.5;
+            }
+            bool timeOk = totalTime > 0 && totalTime < 60;
+
+            // 4) Стоимость — та же логика, что и в AnalyzeCostCalculation
+            double totalCost = prices != null && prices.ContainsKey("base") ? prices["base"] : 0.0;
+            switch (coffeeType)
+            {
+                case CoffeeType.Espresso:
+                    totalCost += 30;
+                    break;
+                case CoffeeType.Americano:
+                    totalCost += 40;
+                    break;
+                case CoffeeType.Cappuccino:
+                    totalCost += 50;
+                    break;
+                case CoffeeType.Latte:
+                    totalCost += 55;
+                    break;
+            }
+            if (sugarLevel > 0)
+            {
+                totalCost += sugarLevel * 5;
+            }
+            bool costOk = totalCost > 0 && totalCost < 500;
+
+            // 5) Постусловия — все должны быть true
+            bool postOk = postConditions == null || postConditions.All(p => p.Value);
+
+            // Консолидированный вердикт
+            return preOk && resourcesOk && timeOk && costOk && postOk;
         }
     }
 }

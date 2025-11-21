@@ -1,5 +1,7 @@
 ﻿using CoffeeMachineWPF.Models;
 using System.Text;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace CoffeeMachineWPF.Analysis
 {
@@ -233,18 +235,28 @@ namespace CoffeeMachineWPF.Analysis
             report.AppendLine(AnalyzePostConditions(postConditions));
 
             // Формула слабейшего условия (WP) и общий вердикт
-            var formula = GetOverallWpFormula(preConditions, postConditions, coffeeType, sugarLevel, resources, prices);
+            var formula = GetOverallWpFormula(preConditions ?? new Dictionary<string, bool>(), postConditions ?? new Dictionary<string, bool>(), coffeeType, sugarLevel, resources ?? new Dictionary<string, (int current, int required, bool isMet)>(), prices ?? new Dictionary<string, double>());
             report.AppendLine($"\nWP-ФОРМУЛА: {formula}");
 
-            bool overall = GetOverallWpVerdict(preConditions, postConditions, coffeeType, sugarLevel, resources, prices);
+            bool overall = GetOverallWpVerdict(preConditions ?? new Dictionary<string, bool>(), postConditions ?? new Dictionary<string, bool>(), coffeeType, sugarLevel, resources ?? new Dictionary<string, (int current, int required, bool isMet)>(), prices ?? new Dictionary<string, double>());
             report.AppendLine($"\nОБЩИЙ ВЕРДИКТ WP: {(overall ? "ВЫПОЛНЕН" : "НАРУШЕН")}");
+
+            // Пошаговый расчёт WP
+            report.AppendLine();
+            report.AppendLine("ПОШАГОВЫЙ РАСЧЁТ WP:");
+            var steps = GetWpCalculationSteps(preConditions ?? new Dictionary<string, bool>(), postConditions ?? new Dictionary<string, bool>(), coffeeType, sugarLevel, resources ?? new Dictionary<string, (int current, int required, bool isMet)>(), prices ?? new Dictionary<string, double>());
+            foreach (var s in steps)
+            {
+                report.AppendLine(s);
+            }
 
             return report.ToString();
         }
 
         /// <summary>
         /// Возвращает текстовое представление формулы WP (слабейшего условия) для переданных данных.
-        /// Формула строится как конъюнкция ключевых частей: предусловия ∧ ресурсы ∧ инвариант времени ∧ инвариант стоимости ∧ постусловия.
+        /// ВАЖНО: формула WP рассчитывается без учёта постусловий — это слабейшее условие для запуска операции.
+        /// Формула строится как конъюнкция ключевых частей: предусловия ∧ ресурсы ∧ инвариант времени ∧ инвариант стоимости.
         /// </summary>
         public string GetOverallWpFormula(
             Dictionary<string, bool> preConditions,
@@ -267,16 +279,14 @@ namespace CoffeeMachineWPF.Analysis
             // Стоимость — то же, что и в анализе стоимости
             string costPart = "(0 < totalCost < 500)";
 
-            string postPart = "TRUE";
-            if (postConditions != null && postConditions.Count > 0)
-                postPart = string.Join(" ∧ ", postConditions.Keys.Select(k => $"({k})"));
-
-            return $"{prePart} ∧ {resourcesPart} ∧ {timePart} ∧ {costPart} ∧ {postPart}";
+            // Постусловия не включаем в формулу WP (слабейшее условие относится к предусловиям и инвариантам)
+            return $"{prePart} ∧ {resourcesPart} ∧ {timePart} ∧ {costPart}";
         }
 
         /// <summary>
         /// Оценивает единый итоговый WP-вердикт по входным данным.
-        /// Возвращает true если все ключевые инварианты и предусловия/постусловия выполнены.
+        /// Возвращает true если все ключевые инварианты и предусловия выполнены.
+        /// Постусловия не учитываются при вычислении слабейшего условия.
         /// </summary>
         public bool GetOverallWpVerdict(
             Dictionary<string, bool> preConditions,
@@ -337,11 +347,109 @@ namespace CoffeeMachineWPF.Analysis
             }
             bool costOk = totalCost > 0 && totalCost < 500;
 
-            // 5) Постусловия — все должны быть true
-            bool postOk = postConditions == null || postConditions.All(p => p.Value);
+            // Постусловия НЕ учитываем при вычислении слабейшего условия (они проверяются отдельно)
 
-            // Консолидированный вердикт
-            return preOk && resourcesOk && timeOk && costOk && postOk;
+            // Консолидированный вердикт (без постусловий)
+            return preOk && resourcesOk && timeOk && costOk;
+        }
+
+        /// <summary>
+        /// Возвращает пошаговый расчёт WP в виде списка строк (подробные промежуточные вычисления).
+        /// </summary>
+        public List<string> GetWpCalculationSteps(
+            Dictionary<string, bool> preConditions,
+            Dictionary<string, bool> postConditions,
+            CoffeeType coffeeType, int sugarLevel,
+            Dictionary<string, (int current, int required, bool isMet)> resources,
+            Dictionary<string, double> prices)
+        {
+            var steps = new List<string>();
+
+            // 1) Предусловия
+            steps.Add("1) Предусловия:");
+            if (preConditions == null || preConditions.Count == 0)
+            {
+                steps.Add("   (нет предусловий)");
+            }
+            else
+            {
+                foreach (var p in preConditions)
+                {
+                    steps.Add($"   - {p.Key}: {(p.Value ? "TRUE" : "FALSE")} ");
+                }
+                steps.Add($"   ИТОГ: {(preConditions.All(p => p.Value) ? "ВСЕ TRUE" : "НЕ ВСЕ TRUE")}");
+            }
+
+            // 2) Ресурсы
+            steps.Add("\n2) Ресурсы:");
+            if (resources == null || resources.Count == 0)
+            {
+                steps.Add("   (информации о ресурсах нет)");
+            }
+            else
+            {
+                foreach (var r in resources)
+                {
+                    steps.Add($"   - {r.Key}: {r.Value.current}/{r.Value.required} -> {(r.Value.isMet ? "OK" : "NOT_OK")}");
+                }
+                steps.Add($"   ИТОГ: {(resources.All(r => r.Value.isMet) ? "ВСЕ ДОСТУПНЫ" : "НЕДОСТАТОЧНО РЕСУРСОВ")}");
+            }
+
+            // 3) Расчёт времени (пошагово)
+            steps.Add("\n3) Расчёт времени:");
+            double baseTime = 10.0;
+            steps.Add($"   - baseTime = {baseTime:F1} сек");
+            double totalTime = baseTime;
+            switch (coffeeType)
+            {
+                case CoffeeType.Espresso:
+                    totalTime += 5; steps.Add("   - +5.0 сек (Espresso)"); break;
+                case CoffeeType.Americano:
+                    totalTime += 10; steps.Add("   - +10.0 сек (Americano)"); break;
+                case CoffeeType.Cappuccino:
+                    totalTime += 15; steps.Add("   - +15.0 сек (Cappuccino)"); break;
+                case CoffeeType.Latte:
+                    totalTime += 18; steps.Add("   - +18.0 сек (Latte)"); break;
+            }
+            if (sugarLevel > 0)
+            {
+                double sugarTime = sugarLevel * 0.5;
+                totalTime += sugarTime;
+                steps.Add($"   - +{sugarTime:F1} сек (сахар: {sugarLevel})");
+            }
+            steps.Add($"   -> totalTime = {totalTime:F1} сек");
+            steps.Add($"   Проверка инварианта времени: 0 < totalTime < 60 -> {(totalTime > 0 && totalTime < 60 ? "TRUE" : "FALSE")} ");
+
+            // 4) Расчёт стоимости (пошагово)
+            steps.Add("\n4) Расчёт стоимости:");
+            double baseCost = (prices != null && prices.ContainsKey("base")) ? prices["base"] : 0.0;
+            steps.Add($"   - baseCost = {baseCost:F2} руб");
+            double totalCost = baseCost;
+            switch (coffeeType)
+            {
+                case CoffeeType.Espresso: totalCost += 30; steps.Add("   - +30.00 руб (Espresso)"); break;
+                case CoffeeType.Americano: totalCost += 40; steps.Add("   - +40.00 руб (Americano)"); break;
+                case CoffeeType.Cappuccino: totalCost += 50; steps.Add("   - +50.00 руб (Cappuccino)"); break;
+                case CoffeeType.Latte: totalCost += 55; steps.Add("   - +55.00 руб (Latte)"); break;
+            }
+            if (sugarLevel > 0)
+            {
+                double sugarCost = sugarLevel * 5;
+                totalCost += sugarCost;
+                steps.Add($"   - +{sugarCost:F2} руб (сахар: {sugarLevel})");
+            }
+            steps.Add($"   -> totalCost = {totalCost:F2} руб");
+            steps.Add($"   Проверка инварианта стоимости: 0 < totalCost < 500 -> {(totalCost > 0 && totalCost < 500 ? "TRUE" : "FALSE")} ");
+
+            
+            // 6) Формула и итог
+            steps.Add("\n5) Формула WP:");
+            steps.Add($"   {GetOverallWpFormula(preConditions ?? new Dictionary<string, bool>(), postConditions ?? new Dictionary<string, bool>(), coffeeType, sugarLevel, resources ?? new Dictionary<string, (int current, int required, bool isMet)>(), prices ?? new Dictionary<string, double>())}");
+
+            bool overall = GetOverallWpVerdict(preConditions ?? new Dictionary<string, bool>(), postConditions ?? new Dictionary<string, bool>(), coffeeType, sugarLevel, resources ?? new Dictionary<string, (int current, int required, bool isMet)>(), prices ?? new Dictionary<string, double>());
+            steps.Add($"\n6) Общий вердикт: {overall}");
+
+            return steps;
         }
     }
 }

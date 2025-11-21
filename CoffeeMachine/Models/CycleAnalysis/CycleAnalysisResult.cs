@@ -21,7 +21,7 @@
         /// Список шагов выполнения цикла с описанием изменений состояния
         /// </summary>
         public List<string> Steps { get; set; } = new();
-        // <summary>
+        /// <summary>
         /// Заключение о корректности циклического алгоритма
         /// </summary>
         public string Conclusion { get; set; } = string.Empty;

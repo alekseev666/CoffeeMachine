@@ -43,7 +43,7 @@
                       Margin="0,0,0,20"/>
             <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
                 <GroupBox.Header>
-                    <local:GroupHeaderWithHelp Title="WP-анализ алгоритмов (ЛР-2)" HelpText="Выполняет WP-аналитический разбор алгоритма приготовления: предусловия, постусловия, инварианты и отчёт по верификации."/>
+                    <local:GroupHeaderWithHelp Title="WP-анализ алгоритмов" HelpText="Выполняет WP-аналитический разбор алгоритма приготовления: предусловия, постусловия, инварианты и отчёт по верификации."/>
                 </GroupBox.Header>
                 <StackPanel Margin="10">
                     <Button Content="Анализировать алгоритм" 
@@ -327,7 +327,6 @@
                       FontWeight="Bold"/>
                     </Border>
 
-                    <!-- Детали приготовления -->
                     <StackPanel Margin="0,10,0,0">
                         <Grid>
                             <Grid.RowDefinitions>

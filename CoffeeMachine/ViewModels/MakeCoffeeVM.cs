@@ -357,7 +357,7 @@ public partial class MakeCoffeeVM : OperationViewModelBase
     }
 
     /// <summary>
-    /// Проверк выполнения постусловий операции приготовления
+    /// Проверка выполнения постусловий операции приготовления
     /// </summary>
     /// <param name="oldState">Состояние кофемашины до приготовления</param>
     /// <returns>true, если постусловия выполнены</returns>

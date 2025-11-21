@@ -90,7 +90,7 @@
         }
 
         /// <summary>
-        /// Уменьшение уровеня износа оборудования
+        /// Уменьшение уровня износа оборудования
         /// </summary>
         /// <param name="amount">Величина уменьшения износа</param>
         public void ReduceWear(double amount)

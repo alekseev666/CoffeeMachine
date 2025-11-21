@@ -44,7 +44,7 @@
 
 ## Архитектура проекта
 
-<img width="1159" height="406" alt="image" src="https://github.com/user-attachments/assets/1b020d6f-d0da-4325-a71d-3da5a3497f62" />
+<img width="972" height="1264" alt="image" src="https://github.com/user-attachments/assets/624cba8f-4377-4887-9f81-28679d8193e6" />
 
 Коротко:
 - UI: `CoffeeMachine/Views` (WPF/XAML)

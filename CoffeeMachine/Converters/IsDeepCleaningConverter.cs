@@ -1,5 +1,4 @@
-﻿
-using CoffeeMachineWPF.Models;
+﻿using CoffeeMachineWPF.Models;
 using System;
 using System.Globalization;
 using System.Windows.Data;

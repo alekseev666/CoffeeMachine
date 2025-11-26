@@ -181,7 +181,7 @@
             </GroupBox>
             <GroupBox FontWeight="SemiBold" Margin="0,0,0,15">
                 <GroupBox.Header>
-                    <local:GroupHeaderWithHelp Title="⏱️ Время приготовления" HelpText="Отображает расчётное время приготовления и прогресс процесса; факторы: тип кофе, сахар и износ машины."/>
+                    <local:GroupHeaderWithHelp Title="Время приготовления" HelpText="Отображает расчётное время приготовления и прогресс процесса; факторы: тип кофе, сахар и износ машины."/>
                 </GroupBox.Header>
                 <StackPanel Margin="10">
                     <Grid>

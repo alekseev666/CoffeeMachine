@@ -227,56 +227,70 @@
 
             <Border Style="{StaticResource InfoCardStyle}">
                 <StackPanel>
-                    <TextBlock Text="Руководство пользователя" 
-                              FontSize="18" 
-                              FontWeight="Bold"
-                              Foreground="#2C3E50"
-                              Margin="0,0,0,15"/>
+                    <TextBlock Text="Руководство пользователя"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="#2C3E50"
+                               Margin="0,0,0,15" />
 
                     <StackPanel>
-                        <TextBlock Text="1. Приготовление кофе" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                        <TextBlock Text="• Выберите тип напитка и уровень сахара" Margin="10,0,0,0"/>
-                        <TextBlock Text="• Проверьте выполнение всех предусловий (зеленые индикаторы)" Margin="10,0,0,0"/>
-                        <TextBlock Text="• Нажмите 'Приготовить кофе' и наблюдайте за процессом верификации" Margin="10,0,0,5"/>
-                        <TextBlock Text="• Убедитесь в выполнении постусловий после завершения" Margin="10,0,0,5"/>
+                        <TextBlock Text="1. Приготовление кофе"
+                                   FontWeight="SemiBold"
+                                   Margin="0,0,0,5" />
+                        <TextBlock Text="• Выберите тип напитка и уровень сахара"
+                                   Margin="10,0,0,0" />
+                        <TextBlock Text="• Проверьте выполнение всех предусловий (зеленые индикаторы)"
+                                   Margin="10,0,0,0" />
+                        <TextBlock Text="• Нажмите 'Приготовить кофе' и наблюдайте за процессом верификации"
+                                   Margin="10,0,0,5" />
+                        <TextBlock Text="• Убедитесь в выполнении постусловий после завершения"
+                                   Margin="10,0,0,5" />
 
-                        <TextBlock Text="2. Пополнение ингредиентов" FontWeight="SemiBold" Margin="0,10,0,5"/>
-                        <TextBlock Text="• Выберите тип ингредиента для пополнения" Margin="10,0,0,0"/>
-                        <TextBlock Text="• Укажите количество или выберите заполнение до максимума" Margin="10,0,0,0"/>
-                        <TextBlock Text="• Проверьте предусловия и выполните пополнение" Margin="10,0,0,5"/>
-                        <TextBlock Text="• Убедитесь в корректном увеличении количества ингредиентов" Margin="10,0,0,5"/>
+                        <TextBlock Text="2. Пополнение ингредиентов"
+                                   FontWeight="SemiBold"
+                                   Margin="0,10,0,5" />
+                        <TextBlock Text="• Выберите тип ингредиента для пополнения"
+                                   Margin="10,0,0,0" />
+                        <TextBlock Text="• Укажите количество или выберите заполнение до максимума"
+                                   Margin="10,0,0,0" />
+                        <TextBlock Text="• Проверьте предусловия и выполните пополнение"
+                                   Margin="10,0,0,5" />
+                        <TextBlock Text="• Убедитесь в корректном увеличении количества ингредиентов"
+                                   Margin="10,0,0,5" />
 
-                        <TextBlock Text="3. Техническое обслуживание" FontWeight="SemiBold" Margin="0,10,0,5"/>
-                        <TextBlock Text="• Выберите тип обслуживания" Margin="10,0,0,0"/>
-                        <TextBlock Text="• Настройте дополнительные опции (сброс статистики, слив воды)" Margin="10,0,0,0"/>
-                        <TextBlock Text="• Выполните обслуживание при доступности (зеленые индикаторы)" Margin="10,0,0,5"/>
-                        <TextBlock Text="• Проверьте восстановление работоспособности оборудования" Margin="10,0,0,5"/>
+                        <TextBlock Text="3. Техническое обслуживание"
+                                   FontWeight="SemiBold"
+                                   Margin="0,10,0,5" />
+                        <TextBlock Text="• Выберите тип обслуживания"
+                                   Margin="10,0,0,0" />
+                        <TextBlock Text="• Настройте дополнительные опции (сброс статистики, слив воды)"
+                                   Margin="10,0,0,0" />
+                        <TextBlock Text="• Выполните обслуживание при доступности (зеленые индикаторы)"
+                                   Margin="10,0,0,5" />
+                        <TextBlock Text="• Проверьте восстановление работоспособности оборудования"
+                                   Margin="10,0,0,5" />
 
-                        <TextBlock Text="4. Анализ циклов" FontWeight="SemiBold" Margin="0,10,0,5"/>
-                        <TextBlock Text="• Выберите циклический процесс для анализа (нагрев, очистка, тестирование)" Margin="10,0,0,0"/>
-                        <TextBlock Text="• Настройте параметры процесса (температуры, скорости, уровни)" Margin="10,0,0,0"/>
-                        <TextBlock Text="• Запустите анализ и изучите формальную верификацию цикла" Margin="10,0,0,0"/>
-                        <TextBlock Text="• Ознакомьтесь с инвариантами и вариантами процесса" Margin="10,0,0,5"/>
+                        <TextBlock Text="4. Анализ циклов"
+                                   FontWeight="SemiBold"
+                                   Margin="0,10,0,5" />
+                        <TextBlock Text="• Выберите циклический процесс для анализа (нагрев, очистка, тестирование)"
+                                   Margin="10,0,0,0" />
+                        <TextBlock Text="• Настройте параметры процесса (температуры, скорости, уровни)"
+                                   Margin="10,0,0,0" />
+                        <TextBlock Text="• Запустите анализ и изучите формальную верификацию цикла"
+                                   Margin="10,0,0,0" />
+                        <TextBlock Text="• Ознакомьтесь с инвариантами и вариантами процесса"
+                                   Margin="10,0,0,5" />
 
-                        <TextBlock Text="5. Логический контроллер" FontWeight="SemiBold" Margin="0,10,0,5"/>
-                        <TextBlock Text="• Наблюдайте за текущим состоянием кофемашины" Margin="10,0,0,0"/>
-                        <TextBlock Text="• Анализируйте формальный отчет о состоянии системы" Margin="10,0,0,0"/>
-                        <TextBlock Text="• Изучите режимы работы и переходы между ними" Margin="10,0,0,0"/>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-            <Border Style="{StaticResource InfoCardStyle}">
-                <StackPanel>
-                    <TextBlock Text="Выполнили:" 
-                              FontSize="18" 
-                              FontWeight="Bold"
-                              Foreground="#2C3E50"
-                              Margin="0,0,0,10"/>
-                    <StackPanel>
-                        <TextBlock Text="Алексеев Кирилл" Margin="10,0,0,0"/>
-                        <TextBlock Text="Маркина Виктория" Margin="10,0,0,0"/>
-                        <TextBlock Text="Суворов Иван" Margin="10,0,0,0"/>
-                        <TextBlock Text="Цветкова Вероника" Margin="10,0,0,0"/>
+                        <TextBlock Text="5. Логический контроллер"
+                                   FontWeight="SemiBold"
+                                   Margin="0,10,0,5" />
+                        <TextBlock Text="• Наблюдайте за текущим состоянием кофемашины"
+                                   Margin="10,0,0,0" />
+                        <TextBlock Text="• Анализируйте формальный отчет о состоянии системы"
+                                   Margin="10,0,0,0" />
+                        <TextBlock Text="• Изучите режимы работы и переходы между ними"
+                                   Margin="10,0,0,0" />
                     </StackPanel>
                 </StackPanel>
             </Border>
